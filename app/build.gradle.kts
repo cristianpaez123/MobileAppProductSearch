@@ -51,6 +51,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     //hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt ("com.google.dagger:hilt-compiler:2.48")
@@ -58,6 +59,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
-
+    //viewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
+    //lifeData
+    implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
+    //Activity
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    // Fragment
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
 }
