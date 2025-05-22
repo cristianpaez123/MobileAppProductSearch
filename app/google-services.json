@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309662550149",
+    "project_id": "productsearchapp-a3d91",
+    "storage_bucket": "productsearchapp-a3d91.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309662550149:android:3f31ba5686165bde4d81ec",
+        "android_client_info": {
+          "package_name": "com.example.mobileappproductsearch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEZlx7PaR4QuQoYQrouZc3mK44eGrMZw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
