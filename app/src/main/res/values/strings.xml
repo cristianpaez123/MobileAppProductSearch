@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MobileAppProductSearch</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Log In</string>
+
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Email format is invalid</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_unexpected">An unexpected error occurred</string>
 </resources>

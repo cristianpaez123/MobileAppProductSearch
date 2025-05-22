@@ -1,7 +1,7 @@
 package com.example.mobileappproductsearch
 
+import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class ProductSearchApp {
-}
+class ProductSearchApp : Application()
