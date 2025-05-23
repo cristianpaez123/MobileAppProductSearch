@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.ActivityLoginBinding
-import com.example.mobileappproductsearch.ui.mainActivity.MainActivity
+import com.example.mobileappproductsearch.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 

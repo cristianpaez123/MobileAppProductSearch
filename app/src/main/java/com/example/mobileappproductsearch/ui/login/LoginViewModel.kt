@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val firebaseErrorMapper: FirebaseErrorMapper
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<LoginUiState>()
@@ -33,7 +34,7 @@ class LoginViewModel @Inject constructor(
                 loginUseCase(email, password)
                 _uiState.value = LoginUiState.Success
             } catch (e: Exception) {
-                val messageRes = FirebaseErrorMapper.map(e)
+                val messageRes = firebaseErrorMapper.map(e)
                 _uiState.value = LoginUiState.Error(messageRes)
             }
         }

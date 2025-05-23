@@ -14,4 +14,9 @@
     <string name="error_user_already_exists">An account with this email already exists</string>
     <string name="error_network">Network error. Please check your connection</string>
 
+    <string name="search_hint">Buscar</string>
+    <string name="search_items_hint">Buscar productos, marcas o categorías</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
