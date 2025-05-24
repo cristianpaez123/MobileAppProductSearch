@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.PopupWindow
@@ -14,7 +15,7 @@ import com.example.mobileappproductsearch.ui.model.ProductModelUi
 
 class SuggestionSearchHelper(
     private val context: Context,
-    private val anchorView: EditText,
+    private val anchorView: View,
     private val onItemClick: (ProductModelUi) -> Unit
 ) {
 

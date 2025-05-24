@@ -37,8 +37,9 @@ class ProductsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        popupHelper = SuggestionSearchHelper(requireContext(), binding.searchInput) { product ->
-            binding.searchInput.setText(product.name)
+
+        popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
+            binding.editextSearchProduct.setText(product.name)
             Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT)
                 .show()
             popupHelper.dismiss()
@@ -48,7 +49,7 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun setupSearchView() {
-        binding.searchInput.setOnEditorActionListener { v, actionId, _ ->
+        binding.editextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.searchProduct(v.text.toString().trim())
                 popupHelper.dismiss()
@@ -58,7 +59,7 @@ class ProductsListFragment : Fragment() {
             }
         }
 
-        binding.searchInput.addTextChangedListener {
+        binding.editextSearchProduct.addTextChangedListener {
             val query = it.toString()
             viewModel.getSuggestions(query)
         }
