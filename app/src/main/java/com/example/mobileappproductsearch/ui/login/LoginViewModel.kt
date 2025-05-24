@@ -52,5 +52,4 @@ class LoginViewModel @Inject constructor(
             val message: String? = null
         ) : LoginUiState()
     }
-
 }
