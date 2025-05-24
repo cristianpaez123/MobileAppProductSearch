@@ -1,6 +1,8 @@
 package com.example.mobileappproductsearch.utils
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
@@ -37,6 +39,7 @@ class SuggestionSearchHelper(
             true
         ).apply {
             elevation = 10f
+            setBackgroundDrawable(ColorDrawable(Color.argb(230, 255, 255, 255)))
             isOutsideTouchable = true
             showAsDropDown(anchorView)
         }
