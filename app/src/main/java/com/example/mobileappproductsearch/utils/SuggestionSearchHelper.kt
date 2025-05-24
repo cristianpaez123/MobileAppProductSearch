@@ -40,7 +40,7 @@ class SuggestionSearchHelper(
             true
         ).apply {
             elevation = 10f
-            setBackgroundDrawable(ColorDrawable(Color.argb(230, 255, 255, 255)))
+            setBackgroundDrawable(ColorDrawable(Color.argb(255, 255, 255, 255)))
             isOutsideTouchable = true
             showAsDropDown(anchorView)
         }

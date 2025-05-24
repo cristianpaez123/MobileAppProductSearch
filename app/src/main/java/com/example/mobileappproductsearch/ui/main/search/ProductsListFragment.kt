@@ -1,14 +1,17 @@
 package com.example.mobileappproductsearch.ui.main.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.FragmentProductsListBinding
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
@@ -44,6 +47,7 @@ class ProductsListFragment : Fragment() {
                 .show()
             popupHelper.dismiss()
         }
+        initRecyclerView()
         setupSearchView()
         setupObservers()
     }
@@ -53,6 +57,7 @@ class ProductsListFragment : Fragment() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.searchProduct(v.text.toString().trim())
                 popupHelper.dismiss()
+                hideKeyboard()
                 true
             } else {
                 false
@@ -60,10 +65,30 @@ class ProductsListFragment : Fragment() {
         }
 
         binding.editextSearchProduct.addTextChangedListener {
+            binding.imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
             val query = it.toString()
             viewModel.getSuggestions(query)
         }
+
+        binding.imageClear.setOnClickListener {
+            binding.editextSearchProduct.text.clear()
+        }
+
+        binding.imageSearch.setOnClickListener {
+            viewModel.searchProduct(binding.editextSearchProduct.text.toString().trim())
+            popupHelper.dismiss()
+            hideKeyboard()
+        }
     }
+
+    private fun initRecyclerView() {
+        adapter = ProductAdapter(emptyList())
+        with(binding.recyclerProducts) {
+            layoutManager = GridLayoutManager(this.context, 1)
+            this.adapter = this@ProductsListFragment.adapter
+        }
+    }
+
 
     private fun setupObservers() {
         viewModel.uiState.observe(this) { state ->
@@ -100,5 +125,11 @@ class ProductsListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         popupHelper.dismiss()
+    }
+
+    fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

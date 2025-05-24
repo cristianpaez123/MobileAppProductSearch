@@ -29,8 +29,6 @@ class ProductsListViewModel @Inject constructor(
     private val _suggestions = MutableLiveData<List<ProductModelUi>>()
     val suggestions: LiveData<List<ProductModelUi>> get()  = _suggestions
 
-    private var suggestionJob: Job? = null
-
 
     fun searchProduct(keyword: String) {
         _uiState.value = SearchResultUiState.Loading
