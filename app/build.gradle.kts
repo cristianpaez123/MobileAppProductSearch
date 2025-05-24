@@ -39,7 +39,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true    }
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -57,7 +58,7 @@ dependencies {
 
     //hilt
     implementation("com.google.dagger:hilt-android:2.48")
-    kapt ("com.google.dagger:hilt-compiler:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
     implementation("com.google.firebase:firebase-analytics")
@@ -78,5 +79,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     //Corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    //material
+    implementation ("com.google.android.material:material:1.11.0")
 
 }

@@ -2,9 +2,9 @@ package com.example.mobileappproductsearch.data.model
 
 import com.example.mobileappproductsearch.domain.model.Attribute
 import com.example.mobileappproductsearch.domain.model.Picture
-import com.example.mobileappproductsearch.domain.model.ProductEntity
+import com.example.mobileappproductsearch.domain.model.ProductModelEntity
 
-data class ProductDto(
+data class ProductModelDto(
     val id: String,
     val name: String,
     val status: String,
@@ -24,7 +24,7 @@ data class PictureDto(
     val url: String
 )
 
-fun ProductDto.toDomain(): ProductEntity = ProductEntity(
+fun ProductModelDto.toDomain(): ProductModelEntity = ProductModelEntity(
     id = id,
     name = name,
     status = status,

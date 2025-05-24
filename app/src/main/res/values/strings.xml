@@ -16,7 +16,9 @@
 
     <string name="search_hint">Buscar</string>
     <string name="search_items_hint">Buscar productos, marcas o categorías</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="error_unauthorized">No autorizado. Verifica tu token.</string>
+    <string name="error_not_found">No se encontraron productos.</string>
+    <string name="error_server_generic">Error del servidor.</string>
 
 </resources>

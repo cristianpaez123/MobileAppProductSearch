@@ -5,40 +5,43 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobileappproductsearch.domain.repository.useCase.LoginUseCase
 import com.example.mobileappproductsearch.domain.repository.useCase.ProductsListUseCase
-import com.example.mobileappproductsearch.ui.login.LoginViewModel
+import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.toUiModel
+import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.delay
+
 
 @HiltViewModel
 class ProductsListViewModel @Inject constructor(
     private val productsListUseCase: ProductsListUseCase,
+    private val productSearchErrorMapper: ProductSearchErrorMapper
 
-    ) : ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableLiveData<SearchResultUiState>()
     val uiState: LiveData<SearchResultUiState> get() = _uiState
 
+    private val _suggestions = MutableLiveData<List<ProductModelUi>>()
+    val suggestions: LiveData<List<ProductModelUi>> get()  = _suggestions
+
+    private var suggestionJob: Job? = null
+
 
     fun searchProduct(keyword: String) {
+        _uiState.value = SearchResultUiState.Loading
         viewModelScope.launch {
             try {
-                productsListUseCase(keyword)
-                _uiState.value = SearchResultUiState.Success
+                val products = productsListUseCase(keyword)
+                val uiModels = products.map { it.toUiModel() }
+                _uiState.value = SearchResultUiState.Success(uiModels)
             } catch (e: HttpException) {
-                val errorMessage = when (e.code()) {
-                    401 -> "No autorizado. Verifica tu token."
-                    404 -> "No se encontraron productos."
-                   else -> "Error de servidor (${e.code()})"
-                }
-                _uiState.value = SearchResultUiState.Error(message = errorMessage)
-            } catch (e: IOException) {
-                _uiState.value = SearchResultUiState.Error(message = "Error de red. Verifica tu conexión.")
-            } catch (e: Exception) {
-                _uiState.value = SearchResultUiState.Error(message = e.localizedMessage ?: "Error desconocido")
+                val messageRes = productSearchErrorMapper.mapError(e)
+                _uiState.value = SearchResultUiState.Error(messageRes)
             }
         }
 
@@ -48,11 +51,22 @@ class ProductsListViewModel @Inject constructor(
 
         object Loading : SearchResultUiState()
 
-        object Success : SearchResultUiState()
+        data class Success(val products: List<ProductModelUi>) : SearchResultUiState()
 
         data class Error(
             @StringRes val messageRes: Int? = null,
             val message: String? = null
         ) : SearchResultUiState()
+    }
+
+    fun getSuggestions(query: String) {
+        viewModelScope.launch {
+            try {
+                val allProducts = productsListUseCase(query)
+                _suggestions.value = allProducts.map { it.toUiModel() }
+            } catch (e: Exception) {
+                _suggestions.value = emptyList()
+            }
+        }
     }
 }

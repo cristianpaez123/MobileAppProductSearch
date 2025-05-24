@@ -1,6 +1,6 @@
 package com.example.mobileappproductsearch.domain.model
 
-data class ProductEntity(
+data class ProductModelEntity(
     val id: String,
     val name: String,
     val status: String,

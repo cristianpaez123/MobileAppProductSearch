@@ -1,7 +1,7 @@
 package com.example.mobileappproductsearch.domain.repository
 
-import com.example.mobileappproductsearch.domain.model.ProductEntity
+import com.example.mobileappproductsearch.domain.model.ProductModelEntity
 
 interface SearchProductRepository {
-    suspend fun SearchProduct(keyword: String):List<ProductEntity>
+    suspend fun SearchProduct(keyword: String):List<ProductModelEntity>
 }
