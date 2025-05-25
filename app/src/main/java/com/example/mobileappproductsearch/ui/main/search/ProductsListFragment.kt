@@ -31,13 +31,13 @@ class ProductsListFragment : Fragment() {
     private val viewModel: ProductsListViewModel by viewModels()
     private lateinit var productAdapter: ProductAdapter
     private lateinit var categoriesAdapter: CategoriesAdapter
-    lateinit var popupHelper: SuggestionSearchHelper
+    private lateinit var popupHelper: SuggestionSearchHelper
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProductsListBinding.inflate(inflater, container, false)
         return binding.root
     }
