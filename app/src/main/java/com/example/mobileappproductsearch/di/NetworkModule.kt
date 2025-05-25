@@ -2,7 +2,9 @@ package com.example.testwireless.di
 
 import com.example.mobileappproductsearch.domain.repository.AuthRepository
 import com.example.mobileappproductsearch.data.repository.AuthRepositoryImpl
+import com.example.mobileappproductsearch.data.repository.CategoryRepositoryImpl
 import com.example.mobileappproductsearch.data.repository.SearchProductRepositoryImpl
+import com.example.mobileappproductsearch.domain.repository.CategoryRepository
 import com.example.mobileappproductsearch.domain.repository.SearchProductRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
@@ -25,5 +27,10 @@ abstract class NetworkModule {
     abstract fun bindSearchProductRepository(
         impl: SearchProductRepositoryImpl
     ): SearchProductRepository
+
+    @Binds
+    abstract fun bindCategoryRepository(
+        impl: CategoryRepositoryImpl
+    ): CategoryRepository
 
 }

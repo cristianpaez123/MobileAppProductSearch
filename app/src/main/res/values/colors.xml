@@ -11,6 +11,6 @@
 
     <!-- Error / Accent -->
     <color name="colorError">#EF6C00</color>
-
+    <color name="categoryItemBackground">#d3d3d3</color>
 
 </resources>

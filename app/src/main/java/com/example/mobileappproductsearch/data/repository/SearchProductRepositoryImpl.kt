@@ -13,7 +13,7 @@ class SearchProductRepositoryImpl @Inject constructor(
 ) : SearchProductRepository {
 
     override suspend fun SearchProduct(keyword: String): List<ProductModelEntity> {
-        val token = "Bearer APP_USR-7252043312902260-052412-33d15f3bd43eba2cb05ea954010d9ac9-706706141"
+        val token = "Bearer APP_USR-7252043312902260-052420-393a98d948bf9f8b00c570afb3e0bac0-706706141"
         val response = api.getProducts(token,"active", "MCO", keyword)
         return response.results.map { it.toDomain() }
     }

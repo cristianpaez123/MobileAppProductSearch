@@ -12,10 +12,13 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.FragmentProductsListBinding
+import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.adapter.SuggestionAdapter
+import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductModelUi
 import com.example.mobileappproductsearch.utils.SuggestionSearchHelper
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +29,8 @@ class ProductsListFragment : Fragment() {
 
     private lateinit var binding: FragmentProductsListBinding
     private val viewModel: ProductsListViewModel by viewModels()
-    private lateinit var adapter: ProductAdapter
+    private lateinit var productAdapter: ProductAdapter
+    private lateinit var categoriesAdapter: CategoriesAdapter
     lateinit var popupHelper: SuggestionSearchHelper
 
 
@@ -82,10 +86,19 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = ProductAdapter(emptyList())
+        productAdapter = ProductAdapter(emptyList())
         with(binding.recyclerProducts) {
             layoutManager = GridLayoutManager(this.context, 1)
-            this.adapter = this@ProductsListFragment.adapter
+            this.adapter = this@ProductsListFragment.productAdapter
+        }
+
+       categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
+
+        }
+        with(binding.categoriesRecycler) {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = this@ProductsListFragment.categoriesAdapter
         }
     }
 
@@ -101,11 +114,20 @@ class ProductsListFragment : Fragment() {
         viewModel.suggestions.observe(viewLifecycleOwner) { suggestions ->
             popupHelper.showSuggestions(suggestions)
         }
+
+        viewModel.uiCategories.observe(viewLifecycleOwner){ categories ->
+            categoriesShow(categories)
+        }
+    }
+
+    private fun categoriesShow(categories: List<CategoryModelUi>) {
+        showLoading(false)
+        categoriesAdapter.updateCategories(categories)
     }
 
     private fun successState(products: List<ProductModelUi>) {
         showLoading(false)
-        adapter.updateData(products)
+        productAdapter.updateData(products)
     }
 
     private fun loadingState() = showLoading(true)
@@ -128,7 +150,8 @@ class ProductsListFragment : Fragment() {
     }
 
     fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }

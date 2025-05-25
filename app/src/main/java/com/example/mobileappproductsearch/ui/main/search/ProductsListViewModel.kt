@@ -6,20 +6,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobileappproductsearch.domain.repository.useCase.ProductsListUseCase
+import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
+import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductModelUi
 import com.example.mobileappproductsearch.ui.model.toUiModel
 import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 
 
 @HiltViewModel
 class ProductsListViewModel @Inject constructor(
     private val productsListUseCase: ProductsListUseCase,
+    private val categoriesUseCase: CategoriesUseCase,
     private val productSearchErrorMapper: ProductSearchErrorMapper
 
 ) : ViewModel() {
@@ -27,7 +28,10 @@ class ProductsListViewModel @Inject constructor(
     val uiState: LiveData<SearchResultUiState> get() = _uiState
 
     private val _suggestions = MutableLiveData<List<ProductModelUi>>()
-    val suggestions: LiveData<List<ProductModelUi>> get()  = _suggestions
+    val suggestions: LiveData<List<ProductModelUi>> get() = _suggestions
+
+    private val _uiCategories = MutableLiveData<List<CategoryModelUi>>()
+    val uiCategories: LiveData<List<CategoryModelUi>> get() = _uiCategories
 
 
     fun searchProduct(keyword: String) {
@@ -37,12 +41,35 @@ class ProductsListViewModel @Inject constructor(
                 val products = productsListUseCase(keyword)
                 val uiModels = products.map { it.toUiModel() }
                 _uiState.value = SearchResultUiState.Success(uiModels)
+                searchCategories(keyword)
             } catch (e: HttpException) {
                 val messageRes = productSearchErrorMapper.mapError(e)
                 _uiState.value = SearchResultUiState.Error(messageRes)
             }
         }
 
+    }
+
+    fun searchCategories(keyword: String) {
+        viewModelScope.launch {
+            try {
+                val products = categoriesUseCase(keyword)
+                _uiCategories.value = products.map { it.toUiModel() }
+            } catch (e: HttpException) {
+                _uiCategories.value = emptyList()
+            }
+        }
+    }
+
+    fun getSuggestions(query: String) {
+        viewModelScope.launch {
+            try {
+                val allProducts = productsListUseCase(query)
+                _suggestions.value = allProducts.map { it.toUiModel() }
+            } catch (e: Exception) {
+                _suggestions.value = emptyList()
+            }
+        }
     }
 
     sealed class SearchResultUiState {
@@ -55,16 +82,5 @@ class ProductsListViewModel @Inject constructor(
             @StringRes val messageRes: Int? = null,
             val message: String? = null
         ) : SearchResultUiState()
-    }
-
-    fun getSuggestions(query: String) {
-        viewModelScope.launch {
-            try {
-                val allProducts = productsListUseCase(query)
-                _suggestions.value = allProducts.map { it.toUiModel() }
-            } catch (e: Exception) {
-                _suggestions.value = emptyList()
-            }
-        }
     }
 }
