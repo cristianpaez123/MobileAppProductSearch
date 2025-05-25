@@ -92,8 +92,9 @@ class ProductsListFragment : Fragment() {
             this.adapter = this@ProductsListFragment.productAdapter
         }
 
-       categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
-
+        categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
+            val query = binding.editextSearchProduct.text.toString().trim()
+            viewModel.searchProductByCategory(query,selectedCategory.domainId)
         }
         with(binding.categoriesRecycler) {
             layoutManager =
@@ -115,14 +116,19 @@ class ProductsListFragment : Fragment() {
             popupHelper.showSuggestions(suggestions)
         }
 
-        viewModel.uiCategories.observe(viewLifecycleOwner){ categories ->
+        viewModel.uiCategories.observe(viewLifecycleOwner) { categories ->
             categoriesShow(categories)
         }
     }
 
     private fun categoriesShow(categories: List<CategoryModelUi>) {
         showLoading(false)
-        categoriesAdapter.updateCategories(categories)
+        if (categories.size <= 1) {
+            binding.categoriesRecycler.visibility = View.GONE
+        } else {
+            binding.categoriesRecycler.visibility = View.VISIBLE
+            categoriesAdapter.updateCategories(categories)
+        }
     }
 
     private fun successState(products: List<ProductModelUi>) {

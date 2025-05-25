@@ -20,6 +20,15 @@ interface ProductsApi {
         @Header("Authorization") authHeader: String,
         @Query("q") query: String
     ): List<CategoryModelDto>
+
+    @GET("products/search")
+    suspend fun getProductsByCategory(
+        @Header("Authorization") authHeader: String,
+        @Query("status") status: String,
+        @Query("site_id") siteId: String,
+        @Query("q") query: String,
+        @Query("domain_id") domainId: String
+    ): ProductResponse
 }
 
 

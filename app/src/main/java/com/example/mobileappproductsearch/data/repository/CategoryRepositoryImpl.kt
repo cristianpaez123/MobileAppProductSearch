@@ -12,7 +12,7 @@ class CategoryRepositoryImpl @Inject constructor(
     private val api: ProductsApi
 ): CategoryRepository {
     override suspend fun getCategories(keyword: String): List<CategoryModelEntity> {
-        val token = "Bearer APP_USR-7252043312902260-052420-393a98d948bf9f8b00c570afb3e0bac0-706706141"
+        val token = "Bearer APP_USR-7252043312902260-052514-766de96b467fb428b97cd378e9ed3056-706706141"
         val response = api.getCategories(token,keyword)
         return response.map { it.toDomain()  }
     }
