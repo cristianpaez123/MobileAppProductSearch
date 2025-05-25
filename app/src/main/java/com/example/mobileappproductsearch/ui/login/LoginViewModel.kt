@@ -42,9 +42,9 @@ class LoginViewModel @Inject constructor(
 
     sealed class LoginUiState {
 
-        object Loading : LoginUiState()
+        data object Loading : LoginUiState()
 
-        object Success : LoginUiState()
+        data object Success : LoginUiState()
 
         data class Error(
             @StringRes

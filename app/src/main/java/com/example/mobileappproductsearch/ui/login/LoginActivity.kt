@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
     private fun loadingState() = showLoadingOverlay(true)
 
     private fun showLoadingOverlay(show: Boolean) {
-        binding.includeLoadingOverlay.loadingOverlay.setVisibility(if (show) View.VISIBLE else View.GONE)
+        binding.includeLoadingOverlay.loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun successState() {
