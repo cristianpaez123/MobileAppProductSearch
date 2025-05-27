@@ -10,7 +10,7 @@
         android:name="com.example.mobileappproductsearch.ui.main.search.ProductsListFragment"
         tools:layout="@layout/fragment_products_list">
         <action
-            android:id="@+id/action_listUserFragment_to_RegisterUserFragment"
+            android:id="@+id/action_productsListFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
     </fragment>
 
