@@ -8,11 +8,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.ActivityLoginBinding
 import com.example.mobileappproductsearch.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         setupViewBinding()
         setupEdgeToEdge()
         setupListeners()
-        setupObservers()
+        observeUiState()
     }
 
     private fun setupViewBinding() {
@@ -51,11 +56,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.uiState.observe(this) { state ->
+        viewModel.uiState.asLiveData().observe(this) { state ->
             when (state) {
-                is LoginViewModel.LoginUiState.Loading -> loadingState()
-                is LoginViewModel.LoginUiState.Success -> successState()
-                is LoginViewModel.LoginUiState.Error -> errorState(state)
+                is LoginUiState.Idle -> Unit
+                is LoginUiState.Loading -> loadingState()
+                is LoginUiState.Success -> successState()
+                is LoginUiState.Error -> errorState(state)
+            }
+        }
+    }
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is LoginUiState.Idle -> Unit
+                        is LoginUiState.Loading -> loadingState()
+                        is LoginUiState.Success -> successState()
+                        is LoginUiState.Error -> errorState(state)
+                    }
+                }
             }
         }
     }
@@ -72,11 +93,13 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun errorState(state: LoginViewModel.LoginUiState.Error) {
+    private fun errorState(error: LoginUiState.Error) {
         showLoadingOverlay(false)
-        val message = state.messageRes?.let { getString(it) }
-            ?: state.message
-            ?: getString(R.string.error_unexpected)
+        val message = when (error) {
+            is LoginUiState.Error.MessageRes -> getString(error.resId)
+            is LoginUiState.Error.MessageText -> error.message
+            is LoginUiState.Error.Unknown -> getString(R.string.error_unexpected)
+        }
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 }
