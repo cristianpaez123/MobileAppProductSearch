@@ -8,7 +8,8 @@ import com.example.mobileappproductsearch.databinding.ItemProductBinding
 import com.example.mobileappproductsearch.ui.model.ProductModelUi
 
 class ProductAdapter(
-    private var products: List<ProductModelUi>
+    private var products: List<ProductModelUi>,
+    private val onProductSelected: (ProductModelUi) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(
@@ -18,9 +19,13 @@ class ProductAdapter(
         fun bind(product: ProductModelUi) {
             binding.tvName.text = product.name
             binding.tvStatus.text = product.status
+            val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imgProduct.context)
-                .load(product.mainImageUrl)
+                .load(imageUrl)
                 .into(binding.imgProduct)
+            binding.root.setOnClickListener {
+                onProductSelected(product)
+            }
         }
     }
 

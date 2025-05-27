@@ -8,16 +8,21 @@ import com.bumptech.glide.Glide
 import com.example.mobileappproductsearch.ui.model.ProductModelUi
 
 class BestSellingProductsAdapter(
-    private var products: List<ProductModelUi>
+    private var products: List<ProductModelUi>,
+    private val onProductSelected: (ProductModelUi) -> Unit
 ) : RecyclerView.Adapter<BestSellingProductsAdapter.BestSellerViewHolder>() {
 
     inner class BestSellerViewHolder(private val binding: ItemBestSellerProductsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductModelUi) {
             binding.textTitle.text = product.name
+            val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imageProduct.context)
-                .load(product.mainImageUrl)
+                .load(imageUrl)
                 .into(binding.imageProduct)
+            binding.root.setOnClickListener {
+                onProductSelected(product)
+            }
         }
     }
 

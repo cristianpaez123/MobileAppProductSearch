@@ -17,8 +17,9 @@ class SuggestionAdapter(
 
         fun bind(product: ProductModelUi) {
             binding.textSuggestion.text = product.name
+            val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imageThumbnail.context)
-                .load(product.mainImageUrl)
+                .load(imageUrl)
                 .into(binding.imageThumbnail)
 
             binding.root.setOnClickListener { onClick(product) }
