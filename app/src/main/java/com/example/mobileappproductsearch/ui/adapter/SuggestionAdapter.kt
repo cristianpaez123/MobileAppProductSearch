@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mobileappproductsearch.databinding.ItemSuggestionBinding
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.ProductUi
 
 class SuggestionAdapter(
-    private val items: List<ProductModelUi>,
-    private val onClick: (ProductModelUi) -> Unit
+    private val items: List<ProductUi>,
+    private val onClick: (ProductUi) -> Unit
 ) : RecyclerView.Adapter<SuggestionAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemSuggestionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(product: ProductModelUi) {
+        fun bind(product: ProductUi) {
             binding.textSuggestion.text = product.name
             val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imageThumbnail.context)

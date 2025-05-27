@@ -20,7 +20,7 @@ import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.utils.SuggestionSearchHelper
 import com.example.mobileappproductsearch.utils.visible
 import com.google.android.material.snackbar.Snackbar
@@ -147,7 +147,7 @@ class ProductsListFragment : Fragment() {
         }
     }
 
-    private fun showBestSellers(products: List<ProductModelUi>) {
+    private fun showBestSellers(products: List<ProductUi>) {
         showLoading(false)
         bestSellingProductsAdapter.updateData(products)
     }
@@ -158,7 +158,7 @@ class ProductsListFragment : Fragment() {
         if (categories.size > 1) categoriesAdapter.updateCategories(categories)
     }
 
-    private fun successState(products: List<ProductModelUi>) {
+    private fun successState(products: List<ProductUi>) {
         showLoading(false)
         binding.includeBestSellers.root.visible(false)
         binding.recyclerProducts.visible(true)
@@ -191,7 +191,7 @@ class ProductsListFragment : Fragment() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun navigateToProductDetails(product: ProductModelUi) {
+    private fun navigateToProductDetails(product: ProductUi) {
         val action = ProductsListFragmentDirections
             .actionProductsListFragmentToProductDetailsFragment(product)
         findNavController().navigate(action)

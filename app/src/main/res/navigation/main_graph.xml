@@ -21,7 +21,7 @@
 
         <argument
             android:name="product"
-            app:argType="com.example.mobileappproductsearch.ui.model.ProductModelUi" />
+            app:argType="com.example.mobileappproductsearch.ui.model.ProductUi" />
     </fragment>
 
 </navigation>

@@ -8,7 +8,7 @@ data class CategoryModelUi(
     val isSelected: Boolean = false
 )
 
-fun CategoryModelEntity.toUiModel(): CategoryModelUi = CategoryModelUi(
+fun CategoryModelEntity.toUi(): CategoryModelUi = CategoryModelUi(
     domainId = domainId,
     domainName = domainName
 )

@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileappproductsearch.databinding.ItemAttributeBinding
-import com.example.mobileappproductsearch.ui.model.AttributeModelUi
+import com.example.mobileappproductsearch.ui.model.AttributeUi
 import com.example.mobileappproductsearch.utils.resolveRowColor
 
 class AttributesAdapter(
-    private var attributes: List<AttributeModelUi>
+    private var attributes: List<AttributeUi>
 ) : RecyclerView.Adapter<AttributesAdapter.AttributeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttributeViewHolder {
@@ -27,13 +27,13 @@ class AttributesAdapter(
         private val binding: ItemAttributeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(attribute: AttributeModelUi, isGray: Boolean) = with(binding) {
+        fun bind(attribute: AttributeUi, isGray: Boolean) = with(binding) {
             tvAttributeName.text = attribute.name
             tvAttributeValue.text = attribute.valueName
             root.setBackgroundColor(root.context.resolveRowColor(isGray))
         }
     }
-    fun updateData(newList: List<AttributeModelUi>) {
+    fun updateData(newList: List<AttributeUi>) {
         attributes = newList
         notifyDataSetChanged()
     }

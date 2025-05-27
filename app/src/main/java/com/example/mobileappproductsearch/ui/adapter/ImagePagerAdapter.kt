@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mobileappproductsearch.databinding.ItemImageBinding
-import com.example.mobileappproductsearch.ui.model.PictureModelUi
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.PictureUi
 
 class ImagePagerAdapter(
-    private var images: List<PictureModelUi>
+    private var images: List<PictureUi>
 ) : RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {
 
     inner class ImageViewHolder(val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root)
@@ -28,7 +27,7 @@ class ImagePagerAdapter(
 
     override fun getItemCount(): Int = images.size
 
-    fun updateImages(newList: List<PictureModelUi>) {
+    fun updateImages(newList: List<PictureUi>) {
         images = newList
         notifyDataSetChanged()
     }

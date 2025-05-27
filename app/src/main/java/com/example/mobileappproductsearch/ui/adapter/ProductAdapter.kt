@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mobileappproductsearch.databinding.ItemProductBinding
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.ProductUi
 
 class ProductAdapter(
-    private var products: List<ProductModelUi>,
-    private val onProductSelected: (ProductModelUi) -> Unit
+    private var products: List<ProductUi>,
+    private val onProductSelected: (ProductUi) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(
         private val binding: ItemProductBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(product: ProductModelUi) {
+        fun bind(product: ProductUi) {
             binding.tvName.text = product.name
             binding.tvStatus.text = product.status
             val imageUrl = product.pictures.firstOrNull()?.url
@@ -44,7 +44,7 @@ class ProductAdapter(
 
     override fun getItemCount(): Int = products.size
 
-    fun updateData(newData: List<ProductModelUi>) {
+    fun updateData(newData: List<ProductUi>) {
         products = newData
         notifyDataSetChanged()
     }

@@ -1,11 +1,11 @@
 package com.example.mobileappproductsearch.data.model
 
-import com.example.mobileappproductsearch.domain.model.AttributeModelEntity
-import com.example.mobileappproductsearch.domain.model.PictureModelEntity
-import com.example.mobileappproductsearch.domain.model.ProductModelEntity
+import com.example.mobileappproductsearch.domain.model.Attribute
+import com.example.mobileappproductsearch.domain.model.Picture
+import com.example.mobileappproductsearch.domain.model.Product
 import com.google.gson.annotations.SerializedName
 
-data class ProductModelDto(
+data class ProductDto(
     val id: String,
     val name: String,
     val status: String,
@@ -25,7 +25,7 @@ data class PictureDto(
     val url: String
 )
 
-fun ProductModelDto.toDomain(): ProductModelEntity = ProductModelEntity(
+fun ProductDto.toDomain(): Product = Product(
     id = id,
     name = name,
     status = status,
@@ -34,13 +34,13 @@ fun ProductModelDto.toDomain(): ProductModelEntity = ProductModelEntity(
     description = description
 )
 
-fun AttributeDto.toDomain(): AttributeModelEntity = AttributeModelEntity(
+fun AttributeDto.toDomain(): Attribute = Attribute(
     id = id,
     name = name,
     valueName = valueName
 )
 
-fun PictureDto.toDomain(): PictureModelEntity = PictureModelEntity(
+fun PictureDto.toDomain(): Picture = Picture(
     id = id,
     url = url
 )

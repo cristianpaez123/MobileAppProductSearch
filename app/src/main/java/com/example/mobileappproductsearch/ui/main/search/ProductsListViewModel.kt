@@ -9,8 +9,8 @@ import com.example.mobileappproductsearch.domain.repository.useCase.ProductsList
 import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
 import com.example.mobileappproductsearch.domain.useCase.getProductsByCategoryUseCase
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
-import com.example.mobileappproductsearch.ui.model.toUiModel
+import com.example.mobileappproductsearch.ui.model.ProductUi
+import com.example.mobileappproductsearch.ui.model.toUi
 import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,14 +29,14 @@ class ProductsListViewModel @Inject constructor(
     private val _uiState = MutableLiveData<SearchResultUiState>()
     val uiState: LiveData<SearchResultUiState> get() = _uiState
 
-    private val _suggestions = MutableLiveData<List<ProductModelUi>>()
-    val suggestions: LiveData<List<ProductModelUi>> get() = _suggestions
+    private val _suggestions = MutableLiveData<List<ProductUi>>()
+    val suggestions: LiveData<List<ProductUi>> get() = _suggestions
 
     private val _uiCategories = MutableLiveData<List<CategoryModelUi>>()
     val uiCategories: LiveData<List<CategoryModelUi>> get() = _uiCategories
 
-    private val _bestSellers = MutableLiveData<List<ProductModelUi>>()
-    val bestSellers: LiveData<List<ProductModelUi>> get() = _bestSellers
+    private val _bestSellers = MutableLiveData<List<ProductUi>>()
+    val bestSellers: LiveData<List<ProductUi>> get() = _bestSellers
 
 
     fun searchProduct(keyword: String) {
@@ -44,7 +44,7 @@ class ProductsListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val products = productsListUseCase(keyword)
-                _uiState.value = SearchResultUiState.Success(products.map { it.toUiModel() })
+                _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
                 fetchCategories(keyword)
             } catch (e: HttpException) {
                 val messageRes = productSearchErrorMapper.mapError(e)
@@ -57,7 +57,7 @@ class ProductsListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val categories = categoriesUseCase(keyword)
-                _uiCategories.value = categories.map { it.toUiModel() }
+                _uiCategories.value = categories.map { it.toUi() }
             } catch (e: Exception) {
                 _uiCategories.value = emptyList()
             }
@@ -68,7 +68,7 @@ class ProductsListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val products = productsListUseCase(keyword)
-                _suggestions.value = products.map { it.toUiModel() }
+                _suggestions.value = products.map { it.toUi() }
             } catch (e: Exception) {
                 _suggestions.value = emptyList()
             }
@@ -79,7 +79,7 @@ class ProductsListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val products = getProductsByCategoryUseCase(keyword, category)
-                _uiState.value = SearchResultUiState.Success(products.map { it.toUiModel() })
+                _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
             } catch (e: Exception) {
                 _suggestions.value = emptyList()
             }
@@ -90,7 +90,7 @@ class ProductsListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val products = productsListUseCase(keyword)
-                _bestSellers.value = products.map { it.toUiModel() }
+                _bestSellers.value = products.map { it.toUi() }
             } catch (e: HttpException) {
                 _suggestions.value = emptyList()
             }
@@ -101,7 +101,7 @@ class ProductsListViewModel @Inject constructor(
 
         object Loading : SearchResultUiState()
 
-        data class Success(val products: List<ProductModelUi>) : SearchResultUiState()
+        data class Success(val products: List<ProductUi>) : SearchResultUiState()
 
         data class Error(
             @StringRes val messageRes: Int? = null,

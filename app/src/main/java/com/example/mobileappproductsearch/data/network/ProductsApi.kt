@@ -1,9 +1,8 @@
 package com.example.mobileappproductsearch.data.network
 
 import com.example.mobileappproductsearch.data.model.CategoryModelDto
-import com.example.mobileappproductsearch.data.model.ProductResponse
+import com.example.mobileappproductsearch.data.model.ProductSearchResponse
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ProductsApi {
@@ -12,7 +11,7 @@ interface ProductsApi {
         @Query("status") status: String,
         @Query("site_id") siteId: String,
         @Query("q") query: String
-    ): ProductResponse
+    ): ProductSearchResponse
 
     @GET("sites/MCO/domain_discovery/search")
     suspend fun getCategories(
@@ -25,7 +24,7 @@ interface ProductsApi {
         @Query("site_id") siteId: String,
         @Query("q") query: String,
         @Query("domain_id") domainId: String
-    ): ProductResponse
+    ): ProductSearchResponse
 }
 
 

@@ -2,22 +2,22 @@ package com.example.mobileappproductsearch.data.repository
 
 import com.example.mobileappproductsearch.data.model.toDomain
 import com.example.mobileappproductsearch.data.network.ProductsApi
-import com.example.mobileappproductsearch.domain.model.ProductModelEntity
-import com.example.mobileappproductsearch.domain.repository.SearchProductRepository
+import com.example.mobileappproductsearch.domain.model.Product
+import com.example.mobileappproductsearch.domain.repository.ProductSearchRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchProductRepositoryImpl @Inject constructor(
+class ProductSearchRepositoryImpl @Inject constructor(
     private val api: ProductsApi
-) : SearchProductRepository {
+) : ProductSearchRepository {
 
-    override suspend fun SearchProduct(keyword: String): List<ProductModelEntity> {
+    override suspend fun searchProducts(keyword: String): List<Product> {
         val response = api.getProducts("active", "MCO", keyword)
         return response.results.map { it.toDomain() }
     }
 
-    override suspend fun getProductsByCategory(keyword: String, category:String): List<ProductModelEntity> {
+    override suspend fun searchProductsByCategory(keyword: String, category:String): List<Product> {
         val response = api.getProductsByCategory("active", "MCO", keyword,category)
         return response.results.map { it.toDomain() }
     }

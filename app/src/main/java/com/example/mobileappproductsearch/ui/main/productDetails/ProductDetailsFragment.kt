@@ -10,15 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.FragmentProductDetailsBinding
-import com.example.mobileappproductsearch.databinding.FragmentProductsListBinding
 import com.example.mobileappproductsearch.ui.adapter.AttributesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ImagePagerAdapter
-import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
-import com.example.mobileappproductsearch.ui.model.AttributeModelUi
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.AttributeUi
+import com.example.mobileappproductsearch.ui.model.ProductUi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +43,7 @@ class ProductDetailsFragment : Fragment() {
         setupProductRecyclerView()
     }
 
-    private fun initAdapter(attributes: List<AttributeModelUi>) {
+    private fun initAdapter(attributes: List<AttributeUi>) {
         attributesAdapter = AttributesAdapter(attributes)
         imagePagerAdapter = ImagePagerAdapter(emptyList())
         binding.viewPagerImages.adapter = imagePagerAdapter
@@ -74,7 +70,7 @@ class ProductDetailsFragment : Fragment() {
         })
     }
 
-    private fun bindProductData(product: ProductModelUi) = with(binding) {
+    private fun bindProductData(product: ProductUi) = with(binding) {
         textProductName.text = product.name
         setupListeners()
     }

@@ -6,23 +6,21 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobileappproductsearch.databinding.PopupSuggestionsBinding
 import com.example.mobileappproductsearch.ui.adapter.SuggestionAdapter
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
+import com.example.mobileappproductsearch.ui.model.ProductUi
 
 class SuggestionSearchHelper(
     private val context: Context,
     private val anchorView: View,
-    private val onItemClick: (ProductModelUi) -> Unit
+    private val onItemClick: (ProductUi) -> Unit
 ) {
 
     private var popupWindow: PopupWindow? = null
 
-    fun showSuggestions(products: List<ProductModelUi>) {
+    fun showSuggestions(products: List<ProductUi>) {
         if (products.isEmpty()) {
             popupWindow?.dismiss()
             return

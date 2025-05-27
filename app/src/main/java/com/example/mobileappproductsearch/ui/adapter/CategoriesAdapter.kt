@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.ItemCategoryBinding
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
-import com.example.mobileappproductsearch.ui.model.ProductModelUi
 
 class CategoriesAdapter(
     private var categories: List<CategoryModelUi>,
