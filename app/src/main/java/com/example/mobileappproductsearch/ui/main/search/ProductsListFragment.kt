@@ -47,18 +47,24 @@ class ProductsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
-            binding.editextSearchProduct.setText(product.name)
-            Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT)
-                .show()
-            popupHelper.dismiss()
-        }
-        initRecyclerView()
+        setupSuggestionPopup()
+        initAdapters()
+        setupProductRecyclerView()
+        setupCategoriesRecyclerView()
+        setupBestSellersRecyclerView()
         setupSearchView()
         setupObservers()
 
         viewModel.getBestSellers("celulares")
 
+    }
+
+    private fun setupSuggestionPopup() {
+        popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
+            binding.editextSearchProduct.setText(product.name)
+            Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT).show()
+            popupHelper.dismiss()
+        }
     }
 
     private fun setupSearchView() {
@@ -68,15 +74,12 @@ class ProductsListFragment : Fragment() {
                 popupHelper.dismiss()
                 hideKeyboard()
                 true
-            } else {
-                false
-            }
+            } else false
         }
 
         binding.editextSearchProduct.addTextChangedListener {
             binding.imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
-            val query = it.toString()
-            viewModel.getSuggestions(query)
+            viewModel.getSuggestions(it.toString())
         }
 
         binding.imageClear.setOnClickListener {
@@ -90,28 +93,30 @@ class ProductsListFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView() {
+    private fun initAdapters() {
         productAdapter = ProductAdapter(emptyList())
-        with(binding.recyclerProducts) {
-            layoutManager = GridLayoutManager(this.context, 1)
-            this.adapter = this@ProductsListFragment.productAdapter
-        }
-
         categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
             val query = binding.editextSearchProduct.text.toString().trim()
             viewModel.searchProductByCategory(query, selectedCategory.domainId)
         }
-        with(binding.categoriesRecycler) {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            this.adapter = this@ProductsListFragment.categoriesAdapter
-        }
         bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList())
-        with(binding.includeBestSellers.recyclerBestSellers) {
-            layoutManager = GridLayoutManager(this.context, 2)
-            this.adapter = this@ProductsListFragment.bestSellingProductsAdapter
-        }
     }
+
+    private fun setupProductRecyclerView() = with(binding.recyclerProducts) {
+        layoutManager = GridLayoutManager(context, 1)
+        adapter = productAdapter
+    }
+
+    private fun setupCategoriesRecyclerView() = with(binding.categoriesRecycler) {
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        adapter = categoriesAdapter
+    }
+
+    private fun setupBestSellersRecyclerView() =
+        with(binding.includeBestSellers.recyclerBestSellers) {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = bestSellingProductsAdapter
+        }
 
 
     private fun setupObservers() {
@@ -128,33 +133,29 @@ class ProductsListFragment : Fragment() {
         }
 
         viewModel.uiCategories.observe(viewLifecycleOwner) { categories ->
-            categoriesShow(categories)
+            showCategories(categories)
         }
 
         viewModel.bestSellers.observe(viewLifecycleOwner) { products ->
-            bestSellingProductsShow(products)
+            showBestSellers(products)
         }
     }
 
-    private fun bestSellingProductsShow(products: List<ProductModelUi>) {
+    private fun showBestSellers(products: List<ProductModelUi>) {
         showLoading(false)
         bestSellingProductsAdapter.updateData(products)
     }
 
-    private fun categoriesShow(categories: List<CategoryModelUi>) {
+    private fun showCategories(categories: List<CategoryModelUi>) {
         showLoading(false)
-        if (categories.size <= 1) {
-            binding.categoriesRecycler.visibility = View.GONE
-        } else {
-            binding.categoriesRecycler.visibility = View.VISIBLE
-            categoriesAdapter.updateCategories(categories)
-        }
+        binding.categoriesRecycler.visible(categories.size > 1)
+        if (categories.size > 1) categoriesAdapter.updateCategories(categories)
     }
 
     private fun successState(products: List<ProductModelUi>) {
         showLoading(false)
-        binding.includeBestSellers.root.visibility = View.GONE
-        binding.recyclerProducts.visibility = View.VISIBLE
+        binding.includeBestSellers.root.visible(false)
+        binding.recyclerProducts.visible(true)
         productAdapter.updateData(products)
     }
 
@@ -182,5 +183,8 @@ class ProductsListFragment : Fragment() {
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    private fun View.visible(show: Boolean) {
+        visibility = if (show) View.VISIBLE else View.GONE
     }
 }
