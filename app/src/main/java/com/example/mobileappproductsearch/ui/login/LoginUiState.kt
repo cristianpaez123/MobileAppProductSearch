@@ -9,6 +9,5 @@ sealed class LoginUiState {
     sealed class Error : LoginUiState() {
         data class MessageRes(@StringRes val resId: Int) : Error()
         data class MessageText(val message: String) : Error()
-        data object Unknown : Error()
     }
 }

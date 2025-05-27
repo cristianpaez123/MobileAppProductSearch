@@ -1,7 +1,7 @@
 package com.example.mobileappproductsearch.domain.repository
 
-import com.google.firebase.auth.AuthResult
+import com.example.mobileappproductsearch.domain.model.LoginResult
 
 interface AuthRepository {
-    suspend fun login(email: String, password: String): AuthResult
+    suspend fun login(email: String, password: String): LoginResult
 }

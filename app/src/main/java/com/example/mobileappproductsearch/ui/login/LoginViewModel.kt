@@ -2,9 +2,10 @@ package com.example.mobileappproductsearch.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobileappproductsearch.R
+import com.example.mobileappproductsearch.domain.model.LoginResult
 import com.example.mobileappproductsearch.domain.useCase.LoginUseCase
 import com.example.mobileappproductsearch.utils.CredentialValidator
-import com.example.mobileappproductsearch.utils.FirebaseErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,11 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
-    private val firebaseErrorMapper: FirebaseErrorMapper
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
-        private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
+    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
 
@@ -31,11 +31,15 @@ class LoginViewModel @Inject constructor(
         _uiState.value = LoginUiState.Loading
         viewModelScope.launch {
             try {
-                loginUseCase(email, password)
-                _uiState.value = LoginUiState.Success
+                when (val result = loginUseCase(email, password)) {
+                    is LoginResult.Success -> _uiState.value = LoginUiState.Success
+
+                    is LoginResult.Failure ->
+                        _uiState.value = LoginUiState.Error.MessageRes(result.errorResId)
+
+                }
             } catch (e: Exception) {
-                val messageRes = firebaseErrorMapper.map(e)
-                _uiState.value = LoginUiState.Error.MessageRes(messageRes)
+                _uiState.value = LoginUiState.Error.MessageRes(R.string.error_unexpected)
             }
         }
     }

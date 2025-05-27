@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileappproductsearch.R
@@ -55,17 +54,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupObservers() {
-        viewModel.uiState.asLiveData().observe(this) { state ->
-            when (state) {
-                is LoginUiState.Idle -> Unit
-                is LoginUiState.Loading -> loadingState()
-                is LoginUiState.Success -> successState()
-                is LoginUiState.Error -> errorState(state)
-            }
-        }
-    }
-
     private fun observeUiState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -98,7 +86,6 @@ class LoginActivity : AppCompatActivity() {
         val message = when (error) {
             is LoginUiState.Error.MessageRes -> getString(error.resId)
             is LoginUiState.Error.MessageText -> error.message
-            is LoginUiState.Error.Unknown -> getString(R.string.error_unexpected)
         }
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
