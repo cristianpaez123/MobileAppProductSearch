@@ -13,13 +13,13 @@ class SearchProductRepositoryImpl @Inject constructor(
 ) : SearchProductRepository {
 
     override suspend fun SearchProduct(keyword: String): List<ProductModelEntity> {
-        val token = "Bearer APP_USR-7252043312902260-052514-766de96b467fb428b97cd378e9ed3056-706706141"
+        val token = "Bearer APP_USR-7252043312902260-052709-66e3ddff00b4c094d519ace80351823f-706706141"
         val response = api.getProducts(token,"active", "MCO", keyword)
         return response.results.map { it.toDomain() }
     }
 
     override suspend fun getProductsByCategory(keyword: String, category:String): List<ProductModelEntity> {
-        val token = "Bearer APP_USR-7252043312902260-052514-766de96b467fb428b97cd378e9ed3056-706706141"
+        val token = "Bearer APP_USR-7252043312902260-052709-66e3ddff00b4c094d519ace80351823f-706706141"
         val response = api.getProductsByCategory(token,"active", "MCO", keyword,category)
         return response.results.map { it.toDomain() }
     }

@@ -20,5 +20,6 @@
     <string name="error_unauthorized">No autorizado. Verifica tu token.</string>
     <string name="error_not_found">No se encontraron productos.</string>
     <string name="error_server_generic">Error del servidor.</string>
+    <string name="best_sellers">Lo mas vendido en mercado libre</string>
 
 </resources>

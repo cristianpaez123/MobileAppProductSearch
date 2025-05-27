@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.FragmentProductsListBinding
+import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.adapter.SuggestionAdapter
@@ -31,6 +32,7 @@ class ProductsListFragment : Fragment() {
     private val viewModel: ProductsListViewModel by viewModels()
     private lateinit var productAdapter: ProductAdapter
     private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var bestSellingProductsAdapter: BestSellingProductsAdapter
     private lateinit var popupHelper: SuggestionSearchHelper
 
 
@@ -54,6 +56,9 @@ class ProductsListFragment : Fragment() {
         initRecyclerView()
         setupSearchView()
         setupObservers()
+
+        viewModel.getBestSellers("celulares")
+
     }
 
     private fun setupSearchView() {
@@ -94,18 +99,23 @@ class ProductsListFragment : Fragment() {
 
         categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
             val query = binding.editextSearchProduct.text.toString().trim()
-            viewModel.searchProductByCategory(query,selectedCategory.domainId)
+            viewModel.searchProductByCategory(query, selectedCategory.domainId)
         }
         with(binding.categoriesRecycler) {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             this.adapter = this@ProductsListFragment.categoriesAdapter
         }
+        bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList())
+        with(binding.includeBestSellers.recyclerBestSellers) {
+            layoutManager = GridLayoutManager(this.context, 2)
+            this.adapter = this@ProductsListFragment.bestSellingProductsAdapter
+        }
     }
 
 
     private fun setupObservers() {
-        viewModel.uiState.observe(this) { state ->
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ProductsListViewModel.SearchResultUiState.Loading -> loadingState()
                 is ProductsListViewModel.SearchResultUiState.Success -> successState(state.products)
@@ -114,11 +124,21 @@ class ProductsListFragment : Fragment() {
         }
         viewModel.suggestions.observe(viewLifecycleOwner) { suggestions ->
             popupHelper.showSuggestions(suggestions)
+            binding.editextSearchProduct.requestFocus()
         }
 
         viewModel.uiCategories.observe(viewLifecycleOwner) { categories ->
             categoriesShow(categories)
         }
+
+        viewModel.bestSellers.observe(viewLifecycleOwner) { products ->
+            bestSellingProductsShow(products)
+        }
+    }
+
+    private fun bestSellingProductsShow(products: List<ProductModelUi>) {
+        showLoading(false)
+        bestSellingProductsAdapter.updateData(products)
     }
 
     private fun categoriesShow(categories: List<CategoryModelUi>) {
@@ -133,6 +153,8 @@ class ProductsListFragment : Fragment() {
 
     private fun successState(products: List<ProductModelUi>) {
         showLoading(false)
+        binding.includeBestSellers.root.visibility = View.GONE
+        binding.recyclerProducts.visibility = View.VISIBLE
         productAdapter.updateData(products)
     }
 

@@ -1,6 +1,7 @@
 package com.example.mobileappproductsearch.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -32,12 +33,14 @@ class SuggestionSearchHelper(
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = SuggestionAdapter(products, onItemClick)
 
+        val popupHeight = Resources.getSystem().displayMetrics.heightPixels / 3
+
         popupWindow?.dismiss()
         popupWindow = PopupWindow(
             binding.root,
             anchorView.width,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
+            popupHeight,
+            false
         ).apply {
             elevation = 10f
             setBackgroundDrawable(ColorDrawable(Color.argb(255, 255, 255, 255)))

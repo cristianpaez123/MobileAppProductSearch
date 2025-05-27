@@ -35,6 +35,9 @@ class ProductsListViewModel @Inject constructor(
     private val _uiCategories = MutableLiveData<List<CategoryModelUi>>()
     val uiCategories: LiveData<List<CategoryModelUi>> get() = _uiCategories
 
+    private val _bestSellers = MutableLiveData<List<ProductModelUi>>()
+    val bestSellers: LiveData<List<ProductModelUi>> get() = _bestSellers
+
 
     fun searchProduct(keyword: String) {
         _uiState.value = SearchResultUiState.Loading
@@ -81,6 +84,18 @@ class ProductsListViewModel @Inject constructor(
                 val uiModels = products.map { it.toUiModel() }
                 _uiState.value = SearchResultUiState.Success(uiModels)
             } catch (e: Exception) {
+                _suggestions.value = emptyList()
+            }
+        }
+    }
+
+    fun getBestSellers(keyword: String) {
+        viewModelScope.launch {
+            try {
+                val products = productsListUseCase(keyword)
+                val uiModels = products.map { it.toUiModel() }
+                _bestSellers.value = uiModels
+            } catch (e: HttpException) {
                 _suggestions.value = emptyList()
             }
         }
