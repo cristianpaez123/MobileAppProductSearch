@@ -27,20 +27,20 @@ class CategoriesAdapter(
         val category = categories[position]
         holder.binding.categoryName.text = category.domainName
 
-        // Cambiar estilos según si está seleccionada
-//        val context = holder.itemView.context
-//        if (category.isSelected) {
-//            holder.binding.categoryCard.setCardBackgroundColor(
-//                ContextCompat.getColor(context, R.color.colorPrimary)
-//            )
-//        } else {
-//            holder.binding.categoryCard.setCardBackgroundColor(
-//                ContextCompat.getColor(context, R.color.categoryItemBackground)
-//            )
-//            holder.binding.categoryName.setTextColor(
-//                ContextCompat.getColor(context, android.R.color.black)
-//            )
-//        }
+
+        val context = holder.itemView.context
+        if (category.isSelected) {
+            holder.binding.categoryCard.setCardBackgroundColor(
+                ContextCompat.getColor(context, R.color.colorPrimary)
+            )
+        } else {
+            holder.binding.categoryCard.setCardBackgroundColor(
+                ContextCompat.getColor(context, R.color.colorTertiary)
+            )
+            holder.binding.categoryName.setTextColor(
+                ContextCompat.getColor(context, android.R.color.black)
+            )
+        }
 
         holder.binding.root.setOnClickListener {
             // Actualizar selección
