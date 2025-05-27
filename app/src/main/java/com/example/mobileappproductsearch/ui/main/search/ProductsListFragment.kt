@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mobileappproductsearch.R
@@ -18,10 +19,10 @@ import com.example.mobileappproductsearch.databinding.FragmentProductsListBindin
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
-import com.example.mobileappproductsearch.ui.adapter.SuggestionAdapter
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductModelUi
 import com.example.mobileappproductsearch.utils.SuggestionSearchHelper
+import com.example.mobileappproductsearch.utils.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,7 +63,8 @@ class ProductsListFragment : Fragment() {
     private fun setupSuggestionPopup() {
         popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
             binding.editextSearchProduct.setText(product.name)
-            Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT)
+                .show()
             popupHelper.dismiss()
         }
     }
@@ -94,12 +96,16 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        productAdapter = ProductAdapter(emptyList())
+        productAdapter = ProductAdapter(emptyList()) { selectedProduct ->
+            navigateToProductDetails(selectedProduct)
+        }
         categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
             val query = binding.editextSearchProduct.text.toString().trim()
             viewModel.searchProductByCategory(query, selectedCategory.domainId)
         }
-        bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList())
+        bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) { selectedProduct ->
+            navigateToProductDetails(selectedProduct)
+        }
     }
 
     private fun setupProductRecyclerView() = with(binding.recyclerProducts) {
@@ -184,7 +190,10 @@ class ProductsListFragment : Fragment() {
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
-    private fun View.visible(show: Boolean) {
-        visibility = if (show) View.VISIBLE else View.GONE
+
+    private fun navigateToProductDetails(product: ProductModelUi) {
+        val action = ProductsListFragmentDirections
+            .actionListUserFragmentToRegisterUserFragment(product)
+        findNavController().navigate(action)
     }
 }

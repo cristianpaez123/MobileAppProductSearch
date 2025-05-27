@@ -18,6 +18,10 @@
         android:id="@+id/productDetailsFragment"
         android:name="com.example.mobileappproductsearch.ui.main.productDetails.ProductDetailsFragment"
         tools:layout="@layout/fragment_product_details">
+
+        <argument
+            android:name="product"
+            app:argType="com.example.mobileappproductsearch.ui.model.ProductModelUi" />
     </fragment>
 
 </navigation>
