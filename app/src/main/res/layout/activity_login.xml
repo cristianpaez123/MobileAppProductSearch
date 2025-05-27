@@ -5,7 +5,7 @@
     android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground"
+    android:background="@color/colorBrandYellow"
     android:fillViewport="true"
     tools:context=".ui.login.LoginActivity">
 
@@ -72,18 +72,18 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="24dp"
             android:text="@string/login_button"
-            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInputLayoutPassword" />
 
-           <include
+        <include
             android:id="@+id/includeLoadingOverlay"
                layout="@layout/loading_overlay" />
 
