@@ -9,7 +9,6 @@ import retrofit2.http.Query
 interface ProductsApi {
     @GET("products/search")
     suspend fun getProducts(
-        @Header("Authorization") authHeader: String,
         @Query("status") status: String,
         @Query("site_id") siteId: String,
         @Query("q") query: String
@@ -17,13 +16,11 @@ interface ProductsApi {
 
     @GET("sites/MCO/domain_discovery/search")
     suspend fun getCategories(
-        @Header("Authorization") authHeader: String,
         @Query("q") query: String
     ): List<CategoryModelDto>
 
     @GET("products/search")
     suspend fun getProductsByCategory(
-        @Header("Authorization") authHeader: String,
         @Query("status") status: String,
         @Query("site_id") siteId: String,
         @Query("q") query: String,
