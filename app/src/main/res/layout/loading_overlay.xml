@@ -3,6 +3,7 @@
     android:id="@+id/loadingOverlay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/loadingOverlayBackground"
     android:clickable="true"
     android:focusable="true"
     android:visibility="gone">
@@ -12,7 +13,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:tint="@color/colorError"
+        android:tint="@color/colorOnPrimary"
         android:src="@drawable/ic_main" />
 
 </FrameLayout>
