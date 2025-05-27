@@ -4,18 +4,18 @@ data class ProductModelEntity(
     val id: String,
     val name: String,
     val status: String,
-    val attributes: List<Attribute>,
-    val pictures: List<Picture>,
+    val attributes: List<AttributeModelEntity>,
+    val pictures: List<PictureModelEntity>,
     val description: String?
 )
 
-data class Attribute(
+data class AttributeModelEntity(
     val id: String,
     val name: String,
     val valueName: String
 )
 
-data class Picture(
+data class PictureModelEntity(
     val id: String,
     val url: String
 )

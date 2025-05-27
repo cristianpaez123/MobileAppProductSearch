@@ -15,8 +15,9 @@ class BestSellingProductsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductModelUi) {
             binding.textTitle.text = product.name
+            val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imageProduct.context)
-                .load(product.mainImageUrl)
+                .load(imageUrl)
                 .into(binding.imageProduct)
         }
     }
