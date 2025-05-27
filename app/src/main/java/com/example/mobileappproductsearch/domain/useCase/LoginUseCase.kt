@@ -1,4 +1,4 @@
-package com.example.mobileappproductsearch.domain.repository.useCase
+package com.example.mobileappproductsearch.domain.useCase
 
 import com.example.mobileappproductsearch.domain.repository.AuthRepository
 import com.google.firebase.auth.AuthResult

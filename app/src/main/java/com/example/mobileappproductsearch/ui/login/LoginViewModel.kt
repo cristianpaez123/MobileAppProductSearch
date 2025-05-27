@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobileappproductsearch.domain.repository.useCase.LoginUseCase
+import com.example.mobileappproductsearch.domain.useCase.LoginUseCase
 import com.example.mobileappproductsearch.utils.CredentialValidator
 import com.example.mobileappproductsearch.utils.FirebaseErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
