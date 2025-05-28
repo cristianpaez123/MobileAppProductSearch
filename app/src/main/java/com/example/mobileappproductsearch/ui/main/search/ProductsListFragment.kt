@@ -171,7 +171,7 @@ class ProductsListFragment : Fragment() {
             is UiState.Idle -> Unit
             is UiState.Loading -> showLoading(true)
             is UiState.Success -> showBestSellers(state.data)
-            is UiState.Error -> errorState(state)
+            is UiState.Error -> errorState(state) { viewModel.loadBestSellers() }
         }
     }
 
@@ -185,7 +185,9 @@ class ProductsListFragment : Fragment() {
                 hideBestSellers()
                 showProducts(state.data)
             }
-            is UiState.Error -> errorState(state)
+            is UiState.Error -> errorState(state) {
+                submitSearch(binding.editTextSearchProduct.text.toString())
+            }
         }
     }
 
@@ -212,18 +214,20 @@ class ProductsListFragment : Fragment() {
         binding.progressBar.visible(show)
     }
 
-    private fun errorState(error: UiState.Error) {
+    private fun errorState(error: UiState.Error, retryAction: () -> Unit) {
         val message = when (error) {
             is UiState.Error.MessageRes -> getString(error.resId)
             is UiState.Error.MessageText -> error.message
         }
-        showError(message)
+        showError(message, retryAction)
     }
 
-    private fun showError(message: String) = binding.includeViewError.apply {
-        errorView.visible(true)
-        txtErrorMessage.text = message
-    }
+    private fun showError(message: String, retryAction: () -> Unit) =
+        binding.includeViewError.apply {
+            errorView.visible(true)
+            txtErrorMessage.text = message
+            btnRetry.setOnClickListener { retryAction() }
+        }
 
     private fun hideError() {
         binding.includeViewError.errorView.visible(false)
@@ -245,7 +249,8 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
