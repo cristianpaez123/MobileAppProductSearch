@@ -3,17 +3,15 @@ package com.example.mobileappproductsearch.ui.main.search
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.mobileappproductsearch.domain.useCase.SearchProductsUseCase
 import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
 import com.example.mobileappproductsearch.domain.useCase.SearchProductsByCategoryUseCase
+import com.example.mobileappproductsearch.domain.useCase.SearchProductsUseCase
+import com.example.mobileappproductsearch.ui.common.BaseViewModel
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.ui.model.toUi
 import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -23,7 +21,7 @@ class ProductsListViewModel @Inject constructor(
     private val searchProductsUseCase: SearchProductsUseCase,
     private val searchProductsByCategoryUseCase: SearchProductsByCategoryUseCase,
     private val productSearchErrorMapper: ProductSearchErrorMapper
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _uiState = MutableLiveData<SearchResultUiState>()
     val uiState: LiveData<SearchResultUiState> = _uiState
@@ -39,7 +37,7 @@ class ProductsListViewModel @Inject constructor(
 
     fun searchProduct(keyword: String) {
         _uiState.value = SearchResultUiState.Loading
-        launchWithErrorHandling(
+        launch(
             onError = { e ->
                 _uiState.value = SearchResultUiState.Error(
                     messageRes = productSearchErrorMapper.mapError(e)
@@ -54,7 +52,7 @@ class ProductsListViewModel @Inject constructor(
 
     fun searchProductByCategory(keyword: String, category: String) {
         _uiState.value = SearchResultUiState.Loading
-        launchWithErrorHandling(
+        launch (
             onError = {
                 _uiState.value = SearchResultUiState.Error()
             }
@@ -65,7 +63,7 @@ class ProductsListViewModel @Inject constructor(
     }
 
     fun loadSuggestions(keyword: String) {
-        launchWithErrorHandling(
+        launch(
             onError = { _suggestions.value = emptyList() }
         ) {
             val products = searchProductsUseCase(keyword)
@@ -74,7 +72,7 @@ class ProductsListViewModel @Inject constructor(
     }
 
     fun loadBestSellers(keyword: String) {
-        launchWithErrorHandling(
+        launch(
             onError = { _bestSellers.value = emptyList() }
         ) {
             val products = searchProductsUseCase(keyword)
@@ -83,24 +81,11 @@ class ProductsListViewModel @Inject constructor(
     }
 
     private fun fetchCategories(keyword: String) {
-        launchWithErrorHandling(
+        launch(
             onError = { _uiCategories.value = emptyList() }
         ) {
             val categories = categoriesUseCase(keyword)
             _uiCategories.value = categories.map { it.toUi() }
-        }
-    }
-
-    private inline fun launchWithErrorHandling(
-        crossinline onError: (Throwable) -> Unit = {},
-        crossinline block: suspend () -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                block()
-            } catch (e: Exception) {
-                onError(e)
-            }
         }
     }
 
