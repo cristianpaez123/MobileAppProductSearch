@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,12 +22,14 @@ import com.example.mobileappproductsearch.databinding.FragmentProductsListBindin
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
+import com.example.mobileappproductsearch.ui.common.UiState
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.utils.SuggestionSearchHelper
 import com.example.mobileappproductsearch.utils.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductsListFragment : Fragment() {
@@ -57,6 +62,9 @@ class ProductsListFragment : Fragment() {
         setupBestSellersRecyclerView()
         setupSearchView()
         setupObservers()
+
+        observeBestSellersUiState()
+        observeSearchProductUiState()
 
         viewModel.loadBestSellers()
     }
@@ -127,13 +135,6 @@ class ProductsListFragment : Fragment() {
 
 
     private fun setupObservers() {
-        viewModel.uiState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is ProductsListViewModel.SearchResultUiState.Loading -> loadingState()
-                is ProductsListViewModel.SearchResultUiState.Success -> successState(state.products)
-                is ProductsListViewModel.SearchResultUiState.Error -> errorState(state)
-            }
-        }
         viewModel.suggestions.observe(viewLifecycleOwner) { suggestions ->
             popupHelper.showSuggestions(suggestions)
             binding.editTextSearchProduct.requestFocus()
@@ -142,26 +143,60 @@ class ProductsListFragment : Fragment() {
         viewModel.uiCategories.observe(viewLifecycleOwner) { categories ->
             showCategories(categories)
         }
+    }
 
-        viewModel.bestSellers.observe(viewLifecycleOwner) { products ->
-            showBestSellers(products)
+    private fun observeBestSellersUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.bestSellersUiState.collect { state ->
+                    hideError()
+                    showLoading(false)
+                    when (state) {
+                        is UiState.Idle -> Unit
+                        is UiState.Loading -> loadingState()
+                        is UiState.Success -> showBestSellers(state.data)
+                        is UiState.Error -> errorState(state)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeSearchProductUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchProductUiState.collect { state ->
+                    hideError()
+                    showLoading(false)
+                    when (state) {
+                        is UiState.Idle -> Unit
+                        is UiState.Loading -> loadingState()
+                        is UiState.Success -> {
+                            hideBestSellers()
+                            showProducts(state.data)
+                        }
+                        is UiState.Error -> errorState(state)
+                    }
+                }
+            }
         }
     }
 
     private fun showBestSellers(products: List<ProductUi>) {
-        showLoading(false)
+        binding.includeBestSellers.root.visible(true)
         bestSellingProductsAdapter.updateData(products)
     }
 
+    private fun hideBestSellers() {
+        binding.includeBestSellers.root.visible(false)
+    }
+
     private fun showCategories(categories: List<CategoryModelUi>) {
-        showLoading(false)
         binding.categoriesRecycler.visible(categories.size > 1)
         if (categories.size > 1) categoriesAdapter.updateCategories(categories)
     }
 
-    private fun successState(products: List<ProductUi>) {
-        showLoading(false)
-        binding.includeBestSellers.root.visible(false)
+    private fun showProducts(products: List<ProductUi>) {
         binding.recyclerProducts.visible(true)
         productAdapter.updateData(products)
     }
@@ -172,12 +207,23 @@ class ProductsListFragment : Fragment() {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    private fun errorState(state: ProductsListViewModel.SearchResultUiState.Error) {
-        showLoading(false)
-        val message = state.messageRes?.let { getString(it) }
-            ?: state.message
-            ?: getString(R.string.error_unexpected)
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    private fun errorState(error: UiState.Error) {
+        val message = when (error) {
+            is UiState.Error.MessageRes -> getString(error.resId)
+            is UiState.Error.MessageText -> error.message
+        }
+        showError(message)
+    }
+
+    private fun showError(message: String) {
+        with(binding.includeViewError) {
+            errorView.visibility = View.VISIBLE
+            txtErrorMessage.text = message
+        }
+    }
+
+    private fun hideError() {
+        binding.includeViewError.errorView.visibility = View.GONE
     }
 
     override fun onDestroyView() {

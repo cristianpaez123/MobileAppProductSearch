@@ -7,11 +7,14 @@ import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
 import com.example.mobileappproductsearch.domain.useCase.SearchProductsByCategoryUseCase
 import com.example.mobileappproductsearch.domain.useCase.SearchProductsUseCase
 import com.example.mobileappproductsearch.ui.common.BaseViewModel
+import com.example.mobileappproductsearch.ui.common.UiState
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.ui.model.toUi
 import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 
@@ -23,8 +26,11 @@ class ProductsListViewModel @Inject constructor(
     private val productSearchErrorMapper: ProductSearchErrorMapper
 ) : BaseViewModel() {
 
-    private val _uiState = MutableLiveData<SearchResultUiState>()
-    val uiState: LiveData<SearchResultUiState> = _uiState
+    private val _bestSellersUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
+    val bestSellersUiState: StateFlow<UiState<List<ProductUi>>> = _bestSellersUiState
+    
+    private val _searchProductUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
+    val searchProductUiState: StateFlow<UiState<List<ProductUi>>> = _searchProductUiState
 
     private val _suggestions = MutableLiveData<List<ProductUi>>()
     val suggestions: LiveData<List<ProductUi>> = _suggestions
@@ -32,33 +38,43 @@ class ProductsListViewModel @Inject constructor(
     private val _uiCategories = MutableLiveData<List<CategoryModelUi>>()
     val uiCategories: LiveData<List<CategoryModelUi>> = _uiCategories
 
-    private val _bestSellers = MutableLiveData<List<ProductUi>>()
-    val bestSellers: LiveData<List<ProductUi>> = _bestSellers
-
-    fun searchProduct(keyword: String) {
-        _uiState.value = SearchResultUiState.Loading
+    fun loadBestSellers() {
+        _bestSellersUiState.value = UiState.Loading
         launch(
-            onError = { e ->
-                _uiState.value = SearchResultUiState.Error(
-                    messageRes = productSearchErrorMapper.mapError(e)
-                )
+            onError = { error ->
+                _bestSellersUiState.value =
+                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
+            }
+        ) {
+            val products = searchProductsUseCase(BEST_SELLER)
+            _bestSellersUiState.value = UiState.Success(products.map { it.toUi() })
+        }
+    }
+    
+    fun searchProduct(keyword: String) {
+        _searchProductUiState.value = UiState.Loading
+        launch(
+            onError = { error ->
+                _searchProductUiState.value =
+                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
             }
         ) {
             val products = searchProductsUseCase(keyword)
-            _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
+            _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
             fetchCategories(keyword)
         }
     }
 
     fun searchProductByCategory(keyword: String, category: String) {
-        _uiState.value = SearchResultUiState.Loading
+        _searchProductUiState.value = UiState.Loading
         launch (
-            onError = {
-                _uiState.value = SearchResultUiState.Error()
+            onError = { error ->
+                _searchProductUiState.value =
+                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
             }
         ) {
             val products = searchProductsByCategoryUseCase(keyword, category)
-            _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
+            _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
         }
     }
 
@@ -68,15 +84,6 @@ class ProductsListViewModel @Inject constructor(
         ) {
             val products = searchProductsUseCase(keyword)
             _suggestions.value = products.map { it.toUi() }
-        }
-    }
-
-    fun loadBestSellers() {
-        launch(
-            onError = { _bestSellers.value = emptyList() }
-        ) {
-            val products = searchProductsUseCase(BEST_SELLER)
-            _bestSellers.value = products.map { it.toUi() }
         }
     }
 
