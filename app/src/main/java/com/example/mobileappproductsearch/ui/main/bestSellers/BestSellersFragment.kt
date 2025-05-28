@@ -1,5 +1,6 @@
 package com.example.mobileappproductsearch.ui.main.bestSellers
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mobileappproductsearch.databinding.ViewBestSellersBinding
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
+import com.example.mobileappproductsearch.ui.main.ProductSelectionListener
 import com.example.mobileappproductsearch.ui.main.search.ProductsListFragment
 import com.example.mobileappproductsearch.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,13 @@ class BestSellersFragment : Fragment() {
     private val viewModel: BestSellersViewModel by viewModels()
 
     private lateinit var adapter: BestSellingProductsAdapter
+
+    private var productSelectionListener: ProductSelectionListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        productSelectionListener = parentFragment as? ProductSelectionListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,7 +51,7 @@ class BestSellersFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = BestSellingProductsAdapter(emptyList()) { product ->
-            (parentFragment as? ProductsListFragment)?.navigateToProductDetails(product) // todo: check
+            productSelectionListener?.onProductSelected(product)
         }
     }
 

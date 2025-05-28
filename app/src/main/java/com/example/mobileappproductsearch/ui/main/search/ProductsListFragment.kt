@@ -22,6 +22,7 @@ import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
+import com.example.mobileappproductsearch.ui.main.ProductSelectionListener
 import com.example.mobileappproductsearch.ui.main.bestSellers.BestSellersFragment
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
@@ -31,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProductsListFragment : Fragment() {
+class ProductsListFragment : Fragment(), ProductSelectionListener {
 
     private val viewModel: ProductsListViewModel by viewModels()
     private lateinit var binding: FragmentProductsListBinding
@@ -239,5 +240,9 @@ class ProductsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.editTextSearchProduct.text.clear()
+    }
+
+    override fun onProductSelected(product: ProductUi) {
+        navigateToProductDetails(product)
     }
 }
