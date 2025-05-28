@@ -169,6 +169,7 @@ class ProductsListFragment : Fragment() {
     private fun handleBestSellersState(state: UiState<List<ProductUi>>) {
         hideError()
         showLoading(false)
+        binding.recyclerProducts.visible(false)
         when (state) {
             is UiState.Idle -> Unit
             is UiState.Loading -> showLoading(true)
