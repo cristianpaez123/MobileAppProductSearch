@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.ActivityLoginBinding
+import com.example.mobileappproductsearch.ui.common.UiState
 import com.example.mobileappproductsearch.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,10 +60,10 @@ class LoginActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is LoginUiState.Idle -> Unit
-                        is LoginUiState.Loading -> loadingState()
-                        is LoginUiState.Success -> successState()
-                        is LoginUiState.Error -> errorState(state)
+                        is UiState.Idle -> Unit
+                        is UiState.Loading -> loadingState()
+                        is UiState.Success -> successState()
+                        is UiState.Error -> errorState(state)
                     }
                 }
             }
@@ -91,11 +92,11 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun errorState(error: LoginUiState.Error) {
+    private fun errorState(error: UiState.Error) {
         showLoadingOverlay(false)
         val message = when (error) {
-            is LoginUiState.Error.MessageRes -> getString(error.resId)
-            is LoginUiState.Error.MessageText -> error.message
+            is UiState.Error.MessageRes -> getString(error.resId)
+            is UiState.Error.MessageText -> error.message
         }
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
