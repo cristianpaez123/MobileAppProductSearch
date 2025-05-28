@@ -6,8 +6,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileappproductsearch.databinding.PopupSuggestionsBinding
 import com.example.mobileappproductsearch.ui.adapter.SuggestionAdapter
 import com.example.mobileappproductsearch.ui.model.ProductUi
@@ -17,33 +19,53 @@ class SuggestionSearchHelper(
     private val anchorView: View,
     private val onItemClick: (ProductUi) -> Unit
 ) {
-
     private var popupWindow: PopupWindow? = null
 
     fun showSuggestions(products: List<ProductUi>) {
         if (products.isEmpty()) {
-            popupWindow?.dismiss()
+            dismiss()
             return
         }
 
         val binding = PopupSuggestionsBinding.inflate(LayoutInflater.from(context))
-        val recyclerView = binding.recyclerSuggestions
+        setupRecycler(binding.recyclerSuggestions, products)
+        createAndShowPopup(binding.root)
+        adjustRecyclerHeight(binding.recyclerSuggestions)
+    }
+
+    private fun setupRecycler(recyclerView: RecyclerView, products: List<ProductUi>) {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = SuggestionAdapter(products, onItemClick)
+    }
 
-        val popupHeight = Resources.getSystem().displayMetrics.heightPixels / 3
-
+    private fun createAndShowPopup(contentView: View) {
         popupWindow?.dismiss()
         popupWindow = PopupWindow(
-            binding.root,
+            contentView,
             anchorView.width,
-            popupHeight,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
             false
         ).apply {
             elevation = 10f
-            setBackgroundDrawable(ColorDrawable(Color.argb(255, 255, 255, 255)))
+            setBackgroundDrawable(ColorDrawable(Color.WHITE))
             isOutsideTouchable = true
             showAsDropDown(anchorView)
+        }
+    }
+
+    private fun adjustRecyclerHeight(recyclerView: RecyclerView) {
+        recyclerView.post {
+            val maxPopupHeight = Resources.getSystem().displayMetrics.heightPixels / 3
+
+            recyclerView.measure(
+                View.MeasureSpec.makeMeasureSpec(anchorView.width, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.UNSPECIFIED
+            )
+
+            val realHeight = recyclerView.measuredHeight
+            recyclerView.layoutParams = recyclerView.layoutParams.apply {
+                height = if (realHeight > maxPopupHeight) maxPopupHeight else ViewGroup.LayoutParams.WRAP_CONTENT
+            }
         }
     }
 
