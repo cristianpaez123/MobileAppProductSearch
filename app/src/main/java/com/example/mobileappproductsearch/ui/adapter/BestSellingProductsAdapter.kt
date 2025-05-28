@@ -16,9 +16,8 @@ class BestSellingProductsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductUi) {
             binding.textTitle.text = product.name
-            val imageUrl = product.pictures.firstOrNull()?.url
             Glide.with(binding.imageProduct.context)
-                .load(imageUrl)
+                .load(product.pictures.firstOrNull()?.url)
                 .into(binding.imageProduct)
             binding.root.setOnClickListener {
                 onProductSelected(product)

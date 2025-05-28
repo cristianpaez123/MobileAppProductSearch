@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.gridlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,5 +86,7 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.16.0")
     //material
     implementation ("com.google.android.material:material:1.11.0")
+    //shimmer
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
 }

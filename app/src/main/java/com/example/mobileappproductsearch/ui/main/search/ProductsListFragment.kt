@@ -22,7 +22,7 @@ import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
-import com.example.mobileappproductsearch.ui.main.ProductSelectionListener
+import com.example.mobileappproductsearch.ui.main.BestSellersListener
 import com.example.mobileappproductsearch.ui.main.bestSellers.BestSellersFragment
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProductsListFragment : Fragment(), ProductSelectionListener {
+class ProductsListFragment : Fragment(), BestSellersListener {
 
     private val viewModel: ProductsListViewModel by viewModels()
     private lateinit var binding: FragmentProductsListBinding
@@ -191,7 +191,7 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
         if (categories.isNotEmpty()) categoriesAdapter.updateCategories(categories)
     }
 
-    fun showLoading(show: Boolean) {
+    private fun showLoading(show: Boolean) {
         binding.includeLoadingOverlay.loadingOverlay.visible(show)
     }
 
@@ -229,7 +229,7 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
             .commit()
     }
 
-    fun navigateToProductDetails(product: ProductUi) {
+    private fun navigateToProductDetails(product: ProductUi) {
         val action = ProductsListFragmentDirections
             .actionProductsListFragmentToProductDetailsFragment(product)
         findNavController().navigate(action)
@@ -248,5 +248,9 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
 
     override fun onProductSelected(product: ProductUi) {
         navigateToProductDetails(product)
+    }
+
+    override fun showError(error: UiState.Error, retryAction: () -> Unit) {
+        errorState(error, retryAction)
     }
 }

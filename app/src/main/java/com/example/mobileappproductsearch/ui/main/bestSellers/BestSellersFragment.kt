@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mobileappproductsearch.databinding.ViewBestSellersBinding
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
-import com.example.mobileappproductsearch.ui.main.ProductSelectionListener
-import com.example.mobileappproductsearch.ui.main.search.ProductsListFragment
+import com.example.mobileappproductsearch.ui.main.BestSellersListener
 import com.example.mobileappproductsearch.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,11 +27,11 @@ class BestSellersFragment : Fragment() {
 
     private lateinit var adapter: BestSellingProductsAdapter
 
-    private var productSelectionListener: ProductSelectionListener? = null
+    private var bestSellersListener: BestSellersListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        productSelectionListener = parentFragment as? ProductSelectionListener
+        bestSellersListener = parentFragment as? BestSellersListener
     }
 
     override fun onCreateView(
@@ -51,7 +50,7 @@ class BestSellersFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = BestSellingProductsAdapter(emptyList()) { product ->
-            productSelectionListener?.onProductSelected(product)
+            bestSellersListener?.onProductSelected(product)
         }
     }
 
@@ -66,30 +65,27 @@ class BestSellersFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-
-                    (parentFragment as? ProductsListFragment)?.showLoading(false)
+                    showShimmer(false)
                     when (state) {
                         is UiState.Idle -> Unit
-                        is UiState.Loading -> (parentFragment as? ProductsListFragment)?.showLoading(true)//showLoading(true)
+                        is UiState.Loading -> showShimmer(true)
                         is UiState.Success -> {
                             binding.root.visible(true)
                             adapter.updateData(state.data)
                         }
                         is UiState.Error -> {
-                            // todo: fix
-//                            binding.errorView.visible(true)
-//                            binding.txtErrorMessage.text = when (state) {
-//                                is UiState.Error.MessageRes -> getString(state.resId)
-//                                is UiState.Error.MessageText -> state.message
-//                            }
-//                            binding.btnRetry.setOnClickListener {
-//                                viewModel.loadBestSellers()
-//                            }
+                            bestSellersListener?.showError(state){
+                                viewModel.loadBestSellers()
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showShimmer(show: Boolean) {
+        binding.includeShimmerBestSellers.shimmerBestSellers.visible(show)
     }
 
 }
