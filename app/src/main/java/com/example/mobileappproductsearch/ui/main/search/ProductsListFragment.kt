@@ -16,11 +16,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.databinding.FragmentProductsListBinding
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.adapter.CategoriesAdapter
 import com.example.mobileappproductsearch.ui.adapter.ProductAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
+import com.example.mobileappproductsearch.ui.main.bestSellers.BestSellersFragment
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.utils.SuggestionSearchHelper
@@ -54,6 +56,8 @@ class ProductsListFragment : Fragment() {
         setupRecyclerViews()
         setupSearchView()
         observeUiState()
+
+        loadBestSellersFragment()
 
         viewModel.loadBestSellers()
     }
@@ -95,11 +99,6 @@ class ProductsListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = categoriesAdapter
         }
-
-        binding.includeBestSellers.recyclerBestSellers.apply {
-            layoutManager = GridLayoutManager(context, 2)
-            adapter = bestSellingProductsAdapter
-        }
     }
 
     private fun setupSearchView() = binding.apply {
@@ -125,18 +124,9 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun observeUiState() {
-        observeBestSellers()
         observeSearchResults()
         observeSuggestions()
         observeCategories()
-    }
-
-    private fun observeBestSellers() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.bestSellersUiState.collect { handleBestSellersState(it) }
-            }
-        }
     }
 
     private fun observeSearchResults() {
@@ -166,18 +156,6 @@ class ProductsListFragment : Fragment() {
         }
     }
 
-    private fun handleBestSellersState(state: UiState<List<ProductUi>>) {
-        hideError()
-        showLoading(false)
-        binding.recyclerProducts.visible(false)
-        when (state) {
-            is UiState.Idle -> Unit
-            is UiState.Loading -> showLoading(true)
-            is UiState.Success -> showBestSellers(state.data)
-            is UiState.Error -> errorState(state) { viewModel.loadBestSellers() }
-        }
-    }
-
     private fun handleSearchState(state: UiState<List<ProductUi>>) {
         hideError()
         showLoading(false)
@@ -194,13 +172,8 @@ class ProductsListFragment : Fragment() {
         }
     }
 
-    private fun showBestSellers(products: List<ProductUi>) {
-        binding.includeBestSellers.root.visible(true)
-        bestSellingProductsAdapter.updateData(products)
-    }
-
     private fun hideBestSellers() {
-        binding.includeBestSellers.root.visible(false)
+        binding.bestSellersFragmentContainer.visible(false)
     }
 
     private fun showProducts(products: List<ProductUi>) {
@@ -213,8 +186,8 @@ class ProductsListFragment : Fragment() {
         if (categories.isNotEmpty()) categoriesAdapter.updateCategories(categories)
     }
 
-    private fun showLoading(show: Boolean) {
-        binding.progressBar.visible(show)
+    fun showLoading(show: Boolean) {
+        binding.includeLoadingOverlay.loadingOverlay.visible(show)
     }
 
     private fun errorState(error: UiState.Error, retryAction: () -> Unit) {
@@ -245,7 +218,13 @@ class ProductsListFragment : Fragment() {
         }
     }
 
-    private fun navigateToProductDetails(product: ProductUi) {
+    private fun loadBestSellersFragment() {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.bestSellersFragmentContainer, BestSellersFragment())
+            .commit()
+    }
+
+    fun navigateToProductDetails(product: ProductUi) {
         val action = ProductsListFragmentDirections
             .actionProductsListFragmentToProductDetailsFragment(product)
         findNavController().navigate(action)
