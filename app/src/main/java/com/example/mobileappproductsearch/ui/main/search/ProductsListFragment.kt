@@ -64,7 +64,10 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        productAdapter = ProductAdapter(emptyList()) { navigateToProductDetails(it) }
+        productAdapter = ProductAdapter(emptyList()) {
+            navigateToProductDetails(it)
+            clearSearchField()
+        }
 
         categoriesAdapter = CategoriesAdapter(emptyList()) {
             val query = binding.editTextSearchProduct.text.toString().trim()
@@ -73,6 +76,7 @@ class ProductsListFragment : Fragment() {
 
         bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) {
             navigateToProductDetails(it)
+            clearSearchField()
             popupHelper.dismiss()
         }
     }
@@ -81,6 +85,7 @@ class ProductsListFragment : Fragment() {
         popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
             binding.editTextSearchProduct.setText(product.name)
             navigateToProductDetails(product)
+            clearSearchField()
             popupHelper.dismiss()
         }
     }
@@ -152,7 +157,6 @@ class ProductsListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestions.collect {
                     popupHelper.showSuggestions(it)
-                    binding.editTextSearchProduct.requestFocus()
                 }
             }
         }
@@ -247,12 +251,13 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
-    override fun onResume() {
-        super.onResume()
+
+    private fun clearSearchField() {
         binding.editTextSearchProduct.text.clear()
     }
 }
