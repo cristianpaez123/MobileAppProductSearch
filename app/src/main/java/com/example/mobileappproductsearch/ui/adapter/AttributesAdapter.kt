@@ -33,8 +33,4 @@ class AttributesAdapter(
             root.setBackgroundColor(root.context.resolveRowColor(isGray))
         }
     }
-    fun updateData(newList: List<AttributeUi>) {
-        attributes = newList
-        notifyDataSetChanged()
-    }
 }

@@ -18,10 +18,10 @@
 
         <ImageView
             android:id="@+id/imageBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
+            android:padding="4dp"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,24 +33,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="nombre del producto"
-            android:maxLines="2"
             android:ellipsize="end"
-            android:textColor="@android:color/black"
+            android:maxLines="2"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageBack"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="name of product \n max two lines \n no more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -74,18 +73,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:textStyle="bold"
         android:textSize="18sp"
-        android:text="Caracteristicas del producto"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:text="Characteristics of product" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAttributes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
