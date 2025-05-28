@@ -73,12 +73,14 @@ class ProductsListFragment : Fragment() {
 
         bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) {
             navigateToProductDetails(it)
+            popupHelper.dismiss()
         }
     }
 
     private fun setupSuggestionPopup() {
         popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
             binding.editTextSearchProduct.setText(product.name)
+            navigateToProductDetails(product)
             popupHelper.dismiss()
         }
     }
@@ -253,5 +255,9 @@ class ProductsListFragment : Fragment() {
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    override fun onResume() {
+        super.onResume()
+        binding.editTextSearchProduct.text.clear()
     }
 }
