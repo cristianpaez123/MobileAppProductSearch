@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    FFE600-->
-<!--    002A61-->
 
     <color name="colorPrimary">@color/yellow_500</color>
     <color name="colorOnPrimary">@color/black</color>
 
-<!--    <color name="colorPrimaryContainer">#4B86BF</color>-->
-<!--    <color name="colorOnPrimaryContainer">#FFFFFF</color>-->
+    <color name="colorPrimaryContainer">#4B86BF</color>
+    <color name="colorOnPrimaryContainer">#FFFFFF</color>
 
     <color name="colorSecondary">@color/blue_900</color>
     <color name="colorOnSecondary">@color/white</color>
 
-<!--    <color name="colorTertiary">#666666</color>-->
-<!--    <color name="colorOnTertiary">#FFFFFF</color>-->
+    <color name="colorTertiary">@color/gray_100</color>
+    <color name="colorOnTertiary">@color/black</color>
 
-<!--    <color name="colorBackground">#FFFFFF</color>-->
-<!--    <color name="colorOnBackground">#000000</color>-->
+    <color name="colorBackground">@color/white</color>
+    <color name="colorOnBackground">@color/black</color>
 
-<!--    <color name="colorSurface">#F5F5F5</color>-->
-<!--    <color name="colorOnSurface">#000000</color>-->
+    <color name="colorSurface">@color/white</color>
+    <color name="colorOnSurface">@color/black</color>
 
-<!--    <color name="colorError">#E60000</color>-->
-<!--    <color name="colorOnError">#FFFFFF</color>-->
-
-<!--    <color name="colorBrandYellow">#FFE600</color>-->
     <color name="loadingOverlayBackground">@color/black_alpha_80</color>
 </resources>

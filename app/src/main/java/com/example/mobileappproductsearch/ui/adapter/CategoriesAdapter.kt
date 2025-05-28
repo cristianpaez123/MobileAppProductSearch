@@ -33,17 +33,12 @@ class CategoriesAdapter(
                 ContextCompat.getColor(context, R.color.colorPrimary)
             )
         } else {
-            // todo: fix
-//            holder.binding.categoryCard.setCardBackgroundColor(
-//                ContextCompat.getColor(context, R.color.colorTertiary)
-//            )
-//            holder.binding.categoryName.setTextColor(
-//                ContextCompat.getColor(context, android.R.color.black)
-//            )
+            holder.binding.categoryCard.setCardBackgroundColor(
+                ContextCompat.getColor(context, R.color.colorSurface)
+            )
         }
 
         holder.binding.root.setOnClickListener {
-            // Actualizar selección
             updateSelectedCategory(category)
             onCategorySelected(category)
         }
@@ -51,7 +46,7 @@ class CategoriesAdapter(
 
     override fun getItemCount(): Int = categories.size
 
-    fun updateSelectedCategory(selected: CategoryModelUi) {
+    private fun updateSelectedCategory(selected: CategoryModelUi) {
         categories = categories.map {
             it.copy(isSelected = it.domainId == selected.domainId)
         }
