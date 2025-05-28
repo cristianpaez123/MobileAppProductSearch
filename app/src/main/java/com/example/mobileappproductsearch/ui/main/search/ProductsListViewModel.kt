@@ -14,95 +14,99 @@ import com.example.mobileappproductsearch.ui.model.toUi
 import com.example.mobileappproductsearch.utils.ProductSearchErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ProductsListViewModel @Inject constructor(
-    private val searchProductsUseCase: SearchProductsUseCase,
     private val categoriesUseCase: CategoriesUseCase,
-    private val SearchProductsByCategoryUseCase: SearchProductsByCategoryUseCase,
+    private val searchProductsUseCase: SearchProductsUseCase,
+    private val searchProductsByCategoryUseCase: SearchProductsByCategoryUseCase,
     private val productSearchErrorMapper: ProductSearchErrorMapper
-
 ) : ViewModel() {
+
     private val _uiState = MutableLiveData<SearchResultUiState>()
-    val uiState: LiveData<SearchResultUiState> get() = _uiState
+    val uiState: LiveData<SearchResultUiState> = _uiState
 
     private val _suggestions = MutableLiveData<List<ProductUi>>()
-    val suggestions: LiveData<List<ProductUi>> get() = _suggestions
+    val suggestions: LiveData<List<ProductUi>> = _suggestions
 
     private val _uiCategories = MutableLiveData<List<CategoryModelUi>>()
-    val uiCategories: LiveData<List<CategoryModelUi>> get() = _uiCategories
+    val uiCategories: LiveData<List<CategoryModelUi>> = _uiCategories
 
     private val _bestSellers = MutableLiveData<List<ProductUi>>()
-    val bestSellers: LiveData<List<ProductUi>> get() = _bestSellers
-
+    val bestSellers: LiveData<List<ProductUi>> = _bestSellers
 
     fun searchProduct(keyword: String) {
         _uiState.value = SearchResultUiState.Loading
-        viewModelScope.launch {
-            try {
-                val products = searchProductsUseCase(keyword)
-                _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
-                fetchCategories(keyword)
-            } catch (e: HttpException) {
-                val messageRes = productSearchErrorMapper.mapError(e)
-                _uiState.value = SearchResultUiState.Error(messageRes)
+        launchWithErrorHandling(
+            onError = { e ->
+                _uiState.value = SearchResultUiState.Error(
+                    messageRes = productSearchErrorMapper.mapError(e)
+                )
             }
+        ) {
+            val products = searchProductsUseCase(keyword)
+            _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
+            fetchCategories(keyword)
+        }
+    }
+
+    fun searchProductByCategory(keyword: String, category: String) {
+        _uiState.value = SearchResultUiState.Loading
+        launchWithErrorHandling(
+            onError = {
+                _uiState.value = SearchResultUiState.Error()
+            }
+        ) {
+            val products = searchProductsByCategoryUseCase(keyword, category)
+            _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
+        }
+    }
+
+    fun loadSuggestions(keyword: String) {
+        launchWithErrorHandling(
+            onError = { _suggestions.value = emptyList() }
+        ) {
+            val products = searchProductsUseCase(keyword)
+            _suggestions.value = products.map { it.toUi() }
+        }
+    }
+
+    fun loadBestSellers(keyword: String) {
+        launchWithErrorHandling(
+            onError = { _bestSellers.value = emptyList() }
+        ) {
+            val products = searchProductsUseCase(keyword)
+            _bestSellers.value = products.map { it.toUi() }
         }
     }
 
     private fun fetchCategories(keyword: String) {
-        viewModelScope.launch {
-            try {
-                val categories = categoriesUseCase(keyword)
-                _uiCategories.value = categories.map { it.toUi() }
-            } catch (e: Exception) {
-                _uiCategories.value = emptyList()
-            }
+        launchWithErrorHandling(
+            onError = { _uiCategories.value = emptyList() }
+        ) {
+            val categories = categoriesUseCase(keyword)
+            _uiCategories.value = categories.map { it.toUi() }
         }
     }
 
-    fun getSuggestions(keyword: String) {
+    private inline fun launchWithErrorHandling(
+        crossinline onError: (Throwable) -> Unit = {},
+        crossinline block: suspend () -> Unit
+    ) {
         viewModelScope.launch {
             try {
-                val products = searchProductsUseCase(keyword)
-                _suggestions.value = products.map { it.toUi() }
+                block()
             } catch (e: Exception) {
-                _suggestions.value = emptyList()
-            }
-        }
-    }
-
-    fun searchProductByCategory(keyword: String,category:String) {
-        viewModelScope.launch {
-            try {
-                val products = SearchProductsByCategoryUseCase(keyword, category)
-                _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
-            } catch (e: Exception) {
-                _suggestions.value = emptyList()
-            }
-        }
-    }
-
-    fun getBestSellers(keyword: String) {
-        viewModelScope.launch {
-            try {
-                val products = searchProductsUseCase(keyword)
-                _bestSellers.value = products.map { it.toUi() }
-            } catch (e: HttpException) {
-                _suggestions.value = emptyList()
+                onError(e)
             }
         }
     }
 
     sealed class SearchResultUiState {
-
-        object Loading : SearchResultUiState()
-
+        data object Loading : SearchResultUiState()
         data class Success(val products: List<ProductUi>) : SearchResultUiState()
-
         data class Error(
             @StringRes val messageRes: Int? = null,
             val message: String? = null

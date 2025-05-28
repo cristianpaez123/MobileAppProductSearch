@@ -56,7 +56,7 @@ class ProductsListFragment : Fragment() {
         setupSearchView()
         setupObservers()
 
-        viewModel.getBestSellers("celulares")
+        viewModel.loadBestSellers("celulares")
 
     }
 
@@ -81,7 +81,7 @@ class ProductsListFragment : Fragment() {
 
         binding.editextSearchProduct.addTextChangedListener {
             binding.imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
-            viewModel.getSuggestions(it.toString())
+            viewModel.loadSuggestions(it.toString())
         }
 
         binding.imageClear.setOnClickListener {
