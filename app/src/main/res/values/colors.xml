@@ -25,5 +25,5 @@
 <!--    <color name="colorOnError">#FFFFFF</color>-->
 
 <!--    <color name="colorBrandYellow">#FFE600</color>-->
-    <color name="loadingOverlayBackground">#B3000000</color>
+    <color name="loadingOverlayBackground">@color/black_alpha_80</color>
 </resources>

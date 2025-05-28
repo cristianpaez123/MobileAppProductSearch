@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="MyTextInputStyle" parent="Widget.Material3.TextInputLayout.FilledBox">
+    <style name="MyTextInputStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/colorSecondary</item>
         <item name="hintTextColor">@color/colorSecondary</item>
     </style>
