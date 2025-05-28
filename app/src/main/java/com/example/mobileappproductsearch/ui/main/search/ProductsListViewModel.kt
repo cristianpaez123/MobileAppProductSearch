@@ -22,9 +22,6 @@ class ProductsListViewModel @Inject constructor(
     private val productSearchErrorMapper: ProductSearchErrorMapper
 ) : BaseViewModel() {
 
-    private val _bestSellersUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
-    val bestSellersUiState: StateFlow<UiState<List<ProductUi>>> = _bestSellersUiState
-
     private val _searchProductUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
     val searchProductUiState: StateFlow<UiState<List<ProductUi>>> = _searchProductUiState
 
@@ -33,19 +30,6 @@ class ProductsListViewModel @Inject constructor(
 
     private val _categories = MutableStateFlow<List<CategoryModelUi>>(emptyList())
     val categories: StateFlow<List<CategoryModelUi>> = _categories
-    
-    fun loadBestSellers() {
-        _bestSellersUiState.value = UiState.Loading
-        launch(
-            onError = { error ->
-                _bestSellersUiState.value =
-                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
-            }
-        ) {
-            val products = searchProductsUseCase(BEST_SELLER)
-            _bestSellersUiState.value = UiState.Success(products.map { it.toUi() })
-        }
-    }
 
     fun searchProduct(keyword: String) {
         _searchProductUiState.value = UiState.Loading
@@ -92,7 +76,4 @@ class ProductsListViewModel @Inject constructor(
         }
     }
 
-    private companion object {
-        const val BEST_SELLER = "los mas vendidos"
-    }
 }

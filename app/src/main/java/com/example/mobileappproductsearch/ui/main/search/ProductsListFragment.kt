@@ -38,7 +38,6 @@ class ProductsListFragment : Fragment(), BestSellersListener {
     private lateinit var binding: FragmentProductsListBinding
 
     private lateinit var popupHelper: SuggestionSearchHelper
-    private lateinit var bestSellingProductsAdapter: BestSellingProductsAdapter
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var productAdapter: ProductAdapter
 
@@ -59,8 +58,6 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         observeUiState()
 
         loadBestSellersFragment()
-
-        viewModel.loadBestSellers()
     }
 
     override fun onDestroyView() {
@@ -77,12 +74,6 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         categoriesAdapter = CategoriesAdapter(emptyList()) {
             val query = binding.editTextSearchProduct.text.toString().trim()
             viewModel.searchProductByCategory(query, it.domainId)
-        }
-
-        bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) {
-            navigateToProductDetails(it)
-            clearSearchField()
-            popupHelper.dismiss()
         }
     }
 
