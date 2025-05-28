@@ -8,7 +8,9 @@ import com.example.mobileappproductsearch.R
 
 fun Context.resolveRowColor(isGray: Boolean): Int {
     return if (isGray) {
-        ContextCompat.getColor(this, R.color.colorTertiary)
+        // todo: fix
+//        ContextCompat.getColor(this, Color.GRAY)
+        Color.GRAY
     } else {
         Color.WHITE
     }

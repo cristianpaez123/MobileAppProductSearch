@@ -33,12 +33,13 @@ class CategoriesAdapter(
                 ContextCompat.getColor(context, R.color.colorPrimary)
             )
         } else {
-            holder.binding.categoryCard.setCardBackgroundColor(
-                ContextCompat.getColor(context, R.color.colorTertiary)
-            )
-            holder.binding.categoryName.setTextColor(
-                ContextCompat.getColor(context, android.R.color.black)
-            )
+            // todo: fix
+//            holder.binding.categoryCard.setCardBackgroundColor(
+//                ContextCompat.getColor(context, R.color.colorTertiary)
+//            )
+//            holder.binding.categoryName.setTextColor(
+//                ContextCompat.getColor(context, android.R.color.black)
+//            )
         }
 
         holder.binding.root.setOnClickListener {

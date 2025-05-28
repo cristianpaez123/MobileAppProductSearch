@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#002A61</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
+<!--    FFE600-->
+<!--    002A61-->
 
-    <color name="colorPrimaryContainer">#004B93</color>
-    <color name="colorOnPrimaryContainer">#FFFFFF</color>
+    <color name="colorPrimary">@color/yellow_500</color>
+    <color name="colorOnPrimary">@color/black</color>
 
-    <color name="colorSecondary">#FFE600</color>
-    <color name="colorOnSecondary">#000000</color>
+<!--    <color name="colorPrimaryContainer">#4B86BF</color>-->
+<!--    <color name="colorOnPrimaryContainer">#FFFFFF</color>-->
 
-    <color name="colorTertiary">#666666</color>
-    <color name="colorOnTertiary">#FFFFFF</color>
+    <color name="colorSecondary">@color/blue_900</color>
+    <color name="colorOnSecondary">@color/white</color>
 
-    <color name="colorBackground">#FFFFFF</color>
-    <color name="colorOnBackground">#000000</color>
+<!--    <color name="colorTertiary">#666666</color>-->
+<!--    <color name="colorOnTertiary">#FFFFFF</color>-->
 
-    <color name="colorSurface">#F5F5F5</color>
-    <color name="colorOnSurface">#000000</color>
+<!--    <color name="colorBackground">#FFFFFF</color>-->
+<!--    <color name="colorOnBackground">#000000</color>-->
 
-    <color name="colorError">#E60000</color>
-    <color name="colorOnError">#FFFFFF</color>
+<!--    <color name="colorSurface">#F5F5F5</color>-->
+<!--    <color name="colorOnSurface">#000000</color>-->
 
-    <color name="colorBrandYellow">#FFE600</color>
+<!--    <color name="colorError">#E60000</color>-->
+<!--    <color name="colorOnError">#FFFFFF</color>-->
+
+<!--    <color name="colorBrandYellow">#FFE600</color>-->
     <color name="loadingOverlayBackground">#B3000000</color>
 </resources>
