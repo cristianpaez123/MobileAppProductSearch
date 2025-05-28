@@ -69,7 +69,10 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
     }
 
     private fun initAdapters() {
-        productAdapter = ProductAdapter(emptyList()) { navigateToProductDetails(it) }
+        productAdapter = ProductAdapter(emptyList()) {
+            navigateToProductDetails(it)
+            clearSearchField()
+        }
 
         categoriesAdapter = CategoriesAdapter(emptyList()) {
             val query = binding.editTextSearchProduct.text.toString().trim()
@@ -78,6 +81,7 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
 
         bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) {
             navigateToProductDetails(it)
+            clearSearchField()
             popupHelper.dismiss()
         }
     }
@@ -86,6 +90,7 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
         popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
             binding.editTextSearchProduct.setText(product.name)
             navigateToProductDetails(product)
+            clearSearchField()
             popupHelper.dismiss()
         }
     }
@@ -143,7 +148,6 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestions.collect {
                     popupHelper.showSuggestions(it)
-                    binding.editTextSearchProduct.requestFocus()
                 }
             }
         }
@@ -237,8 +241,8 @@ class ProductsListFragment : Fragment(), ProductSelectionListener {
         val view = requireActivity().currentFocus ?: View(requireContext())
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
-    override fun onResume() {
-        super.onResume()
+
+    private fun clearSearchField() {
         binding.editTextSearchProduct.text.clear()
     }
 
