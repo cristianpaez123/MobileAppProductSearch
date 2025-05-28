@@ -71,11 +71,11 @@ class ProductsListViewModel @Inject constructor(
         }
     }
 
-    fun loadBestSellers(keyword: String) {
+    fun loadBestSellers() {
         launch(
             onError = { _bestSellers.value = emptyList() }
         ) {
-            val products = searchProductsUseCase(keyword)
+            val products = searchProductsUseCase(BEST_SELLER)
             _bestSellers.value = products.map { it.toUi() }
         }
     }
@@ -96,5 +96,9 @@ class ProductsListViewModel @Inject constructor(
             @StringRes val messageRes: Int? = null,
             val message: String? = null
         ) : SearchResultUiState()
+    }
+
+    private companion object {
+        const val BEST_SELLER = "los mas vendidos"
     }
 }

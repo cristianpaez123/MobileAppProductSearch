@@ -29,13 +29,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ProductsListFragment : Fragment() {
 
-    private lateinit var binding: FragmentProductsListBinding
     private val viewModel: ProductsListViewModel by viewModels()
-    private lateinit var productAdapter: ProductAdapter
-    private lateinit var categoriesAdapter: CategoriesAdapter
-    private lateinit var bestSellingProductsAdapter: BestSellingProductsAdapter
-    private lateinit var popupHelper: SuggestionSearchHelper
 
+    private lateinit var binding: FragmentProductsListBinding
+
+    private lateinit var bestSellingProductsAdapter: BestSellingProductsAdapter
+    private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var productAdapter: ProductAdapter
+
+    private lateinit var popupHelper: SuggestionSearchHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,13 +58,12 @@ class ProductsListFragment : Fragment() {
         setupSearchView()
         setupObservers()
 
-        viewModel.loadBestSellers("celulares")
-
+        viewModel.loadBestSellers()
     }
 
     private fun setupSuggestionPopup() {
         popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
-            binding.editextSearchProduct.setText(product.name)
+            binding.editTextSearchProduct.setText(product.name)
             Toast.makeText(requireContext(), "Seleccionado: ${product.name}", Toast.LENGTH_SHORT)
                 .show()
             popupHelper.dismiss()
@@ -70,7 +71,7 @@ class ProductsListFragment : Fragment() {
     }
 
     private fun setupSearchView() {
-        binding.editextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
+        binding.editTextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 viewModel.searchProduct(v.text.toString().trim())
                 popupHelper.dismiss()
@@ -79,17 +80,17 @@ class ProductsListFragment : Fragment() {
             } else false
         }
 
-        binding.editextSearchProduct.addTextChangedListener {
+        binding.editTextSearchProduct.addTextChangedListener {
             binding.imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
             viewModel.loadSuggestions(it.toString())
         }
 
         binding.imageClear.setOnClickListener {
-            binding.editextSearchProduct.text.clear()
+            binding.editTextSearchProduct.text.clear()
         }
 
         binding.imageSearch.setOnClickListener {
-            viewModel.searchProduct(binding.editextSearchProduct.text.toString().trim())
+            viewModel.searchProduct(binding.editTextSearchProduct.text.toString().trim())
             popupHelper.dismiss()
             hideKeyboard()
         }
@@ -100,7 +101,7 @@ class ProductsListFragment : Fragment() {
             navigateToProductDetails(selectedProduct)
         }
         categoriesAdapter = CategoriesAdapter(emptyList()) { selectedCategory ->
-            val query = binding.editextSearchProduct.text.toString().trim()
+            val query = binding.editTextSearchProduct.text.toString().trim()
             viewModel.searchProductByCategory(query, selectedCategory.domainId)
         }
         bestSellingProductsAdapter = BestSellingProductsAdapter(emptyList()) { selectedProduct ->
@@ -135,7 +136,7 @@ class ProductsListFragment : Fragment() {
         }
         viewModel.suggestions.observe(viewLifecycleOwner) { suggestions ->
             popupHelper.showSuggestions(suggestions)
-            binding.editextSearchProduct.requestFocus()
+            binding.editTextSearchProduct.requestFocus()
         }
 
         viewModel.uiCategories.observe(viewLifecycleOwner) { categories ->
@@ -168,7 +169,7 @@ class ProductsListFragment : Fragment() {
     private fun loadingState() = showLoading(true)
 
     private fun showLoading(show: Boolean) {
-        binding.progressBar.setVisibility(if (show) View.VISIBLE else View.GONE)
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun errorState(state: ProductsListViewModel.SearchResultUiState.Error) {
@@ -184,7 +185,7 @@ class ProductsListFragment : Fragment() {
         popupHelper.dismiss()
     }
 
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         val imm =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = requireActivity().currentFocus ?: View(requireContext())

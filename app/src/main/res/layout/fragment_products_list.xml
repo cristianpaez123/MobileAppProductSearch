@@ -45,7 +45,7 @@
                         android:visibility="gone" />
 
                     <EditText
-                        android:id="@+id/editextSearchProduct"
+                        android:id="@+id/editTextSearchProduct"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@id/categoriesRecycler" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             style="@style/Widget.Material3.CircularProgressIndicator"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <include
-            android:id="@+id/include_best_sellers"
+            android:id="@+id/includeBestSellers"
             layout="@layout/view_best_sellers"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -106,5 +106,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/includeViewError"
+            layout="@layout/view_error"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
