@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobileappproductsearch.domain.repository.useCase.ProductsListUseCase
+import com.example.mobileappproductsearch.domain.useCase.SearchProductsUseCase
 import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
-import com.example.mobileappproductsearch.domain.useCase.getProductsByCategoryUseCase
+import com.example.mobileappproductsearch.domain.useCase.SearchProductsByCategoryUseCase
 import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.ui.model.toUi
@@ -20,9 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsListViewModel @Inject constructor(
-    private val productsListUseCase: ProductsListUseCase,
+    private val searchProductsUseCase: SearchProductsUseCase,
     private val categoriesUseCase: CategoriesUseCase,
-    private val getProductsByCategoryUseCase: getProductsByCategoryUseCase,
+    private val SearchProductsByCategoryUseCase: SearchProductsByCategoryUseCase,
     private val productSearchErrorMapper: ProductSearchErrorMapper
 
 ) : ViewModel() {
@@ -43,7 +43,7 @@ class ProductsListViewModel @Inject constructor(
         _uiState.value = SearchResultUiState.Loading
         viewModelScope.launch {
             try {
-                val products = productsListUseCase(keyword)
+                val products = searchProductsUseCase(keyword)
                 _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
                 fetchCategories(keyword)
             } catch (e: HttpException) {
@@ -67,7 +67,7 @@ class ProductsListViewModel @Inject constructor(
     fun getSuggestions(keyword: String) {
         viewModelScope.launch {
             try {
-                val products = productsListUseCase(keyword)
+                val products = searchProductsUseCase(keyword)
                 _suggestions.value = products.map { it.toUi() }
             } catch (e: Exception) {
                 _suggestions.value = emptyList()
@@ -78,7 +78,7 @@ class ProductsListViewModel @Inject constructor(
     fun searchProductByCategory(keyword: String,category:String) {
         viewModelScope.launch {
             try {
-                val products = getProductsByCategoryUseCase(keyword, category)
+                val products = SearchProductsByCategoryUseCase(keyword, category)
                 _uiState.value = SearchResultUiState.Success(products.map { it.toUi() })
             } catch (e: Exception) {
                 _suggestions.value = emptyList()
@@ -89,7 +89,7 @@ class ProductsListViewModel @Inject constructor(
     fun getBestSellers(keyword: String) {
         viewModelScope.launch {
             try {
-                val products = productsListUseCase(keyword)
+                val products = searchProductsUseCase(keyword)
                 _bestSellers.value = products.map { it.toUi() }
             } catch (e: HttpException) {
                 _suggestions.value = emptyList()
