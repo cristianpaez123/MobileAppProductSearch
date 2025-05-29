@@ -37,9 +37,9 @@ Para acceder a la aplicación, puedes utilizar uno de los siguientes usuarios de
 | Inyección de dependencias| Hilt (dagger-hilt-android, hilt-viewmodel, kapt)                                                                  |
 | UI / Layout              | XML Layouts, Fragmentos, RecyclerView, LiveData, StateFlow, Navigation Component                                  |
 | Red                      | Retrofit + OkHttp3 + Gson                                                                                         |
-| Firebase                 | Firebase Authentication + Firestore + Firebase BoM                                                               |
+| Firebase                 | Firebase Authentication                                                              |
 | Sugerencias              | Custom Popup con RecyclerView para mostrar sugerencias dinámicas                                                 |
-| Pruebas                  | JUnit5, Truth, Mockito-Kotlin, Coroutines Test                                                                    |
+| Pruebas                  | JUnit4, Mockito-Kotlin, Coroutines Test                                                                    |
 
 ---
 
@@ -102,7 +102,6 @@ Celular: +57 300 702 5600
 
 | list of products                | list of products(dark)                                                                                           |
 |--------------------------|------------------------------------------------------------------------------------------------------------------|
-| <img src="https://github.com/user-attachments/assets/3e165664-d062-4091-b5bc-ae8b615cf2eb" alt="Pantalla Principal" width="200"/>    | <img src="https://github.com/user-attachments/assets/57ef5aee-847f-41ed-b7d1-0f60aa075df6" alt="Pantalla Principal" width="200"/>|
 | <img src="https://github.com/user-attachments/assets/0f4f594f-bf5a-40b5-9fe4-671e16bde282" alt="Pantalla Principal" width="200"/>  | <img src="https://github.com/user-attachments/assets/fc6cf348-aaa0-4185-894d-e968df596c23" alt="Pantalla Principal" width="200"/>   |
 
 
@@ -110,11 +109,13 @@ Celular: +57 300 702 5600
 |------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <img src="https://github.com/user-attachments/assets/15cbadda-73c0-4f31-be1c-9eedf013a86f" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/8848e087-d589-4692-8a4d-4d6f793c33ea" alt="Pantalla Principal" width="200"/>         |
 
+| error view                       | error view(dark)                                                                                    |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/5efa7eb6-be26-470a-b52c-74f4bbc6443d" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/4e0ff4b5-2ac8-4c78-99ae-e64e5f4b4e73" alt="Pantalla Principal" width="200"/>         |
 
-
-
-
-
+| product not found                       | product not found(dark)                                                                                    |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/1c755813-042c-46a5-9aae-8167ec50863d" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/2f47d575-15ec-41ea-88a1-942277634e29" alt="Pantalla Principal" width="200"/>         |
 
 
 
