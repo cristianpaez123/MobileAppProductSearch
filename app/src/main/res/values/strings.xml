@@ -29,4 +29,6 @@
     <string name="error">Error icon</string>
 
     <string name="product_not_found">Product not found</string>
+
+    <string name="Characteristics_product">Characteristics of product</string>
 </resources>
