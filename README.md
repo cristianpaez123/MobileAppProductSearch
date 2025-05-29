@@ -85,3 +85,24 @@ Correo: cristianpaezguerrero@gmail.com
 Celular: +57 300 702 5600
 
 ---
+
+
+<h3>Login</h3>                                                                                                                      <h3>Login(dark)</h3>                                                                                                                            
+              
+<img src="https://github.com/user-attachments/assets/0ccde1de-d131-4904-8eb0-ebe14c0c9fb6" alt="Pantalla Principal" width="200"/>   <img src="https://github.com/user-attachments/assets/90d3f66d-2dd8-41eb-9683-445b24794a20" alt="Pantalla Principal" width="200"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
