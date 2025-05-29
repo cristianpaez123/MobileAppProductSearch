@@ -17,7 +17,7 @@ import javax.inject.Singleton
 object AppModule {
 
     private const val BASE_URL = "https://api.mercadolibre.com/"
-    private const val TOKEN = "APP_USR-7252043312902260-052816-882cbc9737c89b5ca37fd652c7928ab3-706706141"
+    private const val TOKEN = "APP_USR-7252043312902260-052820-ac03d2e4393d9ad199c305372d23563d-706706141"
 
     @Provides
     @Singleton
