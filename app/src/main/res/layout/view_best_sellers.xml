@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutBestSellers"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/textView"
