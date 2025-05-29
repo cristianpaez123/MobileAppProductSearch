@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsListViewModel @Inject constructor(
+class ProductSearchViewModel @Inject constructor(
     private val categoriesUseCase: CategoriesUseCase,
     private val searchProductsUseCase: SearchProductsUseCase,
     private val searchProductsByCategoryUseCase: SearchProductsByCategoryUseCase,
@@ -25,56 +25,38 @@ class ProductsListViewModel @Inject constructor(
     private val _searchProductUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Initial)
     val searchProductUiState: StateFlow<UiState<List<ProductUi>>> = _searchProductUiState
 
-    private val _suggestions = MutableStateFlow<List<ProductUi>>(emptyList())
-    val suggestions: StateFlow<List<ProductUi>> = _suggestions
-
     private val _categories = MutableStateFlow<List<CategoryModelUi>>(emptyList())
     val categories: StateFlow<List<CategoryModelUi>> = _categories
 
     fun searchProduct(keyword: String) {
         _searchProductUiState.value = UiState.Loading
-        launch(
-            onError = { error ->
-                _searchProductUiState.value =
-                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
-            }
-        ) {
+        launch(onError = {
+            _searchProductUiState.value =
+                UiState.Error.MessageRes(productSearchErrorMapper.mapError(it))
+        }) {
             val products = searchProductsUseCase(keyword)
-            if (products.isNotEmpty()) {
-                _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
+            _searchProductUiState.value = if (products.isNotEmpty()) {
+                UiState.Success(products.map { it.toUi() })
             } else {
-                _searchProductUiState.value = UiState.EmptyData
+                UiState.EmptyData
             }
-            fetchCategories(keyword)
         }
+        fetchCategories(keyword)
     }
 
     fun searchProductByCategory(keyword: String, category: String) {
         _searchProductUiState.value = UiState.Loading
-        launch(
-            onError = { error ->
-                _searchProductUiState.value =
-                    UiState.Error.MessageRes(productSearchErrorMapper.mapError(error))
-            }
-        ) {
+        launch(onError = {
+            _searchProductUiState.value =
+                UiState.Error.MessageRes(productSearchErrorMapper.mapError(it))
+        }) {
             val products = searchProductsByCategoryUseCase(keyword, category)
             _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
         }
     }
 
-    fun loadSuggestions(keyword: String) {
-        launch(
-            onError = { _suggestions.value = emptyList() }
-        ) {
-            val products = searchProductsUseCase(keyword)
-            _suggestions.value = products.map { it.toUi() }
-        }
-    }
-
     private fun fetchCategories(keyword: String) {
-        launch(
-            onError = { _categories.value = emptyList() }
-        ) {
+        launch(onError = { _categories.value = emptyList() }) {
             val categories = categoriesUseCase(keyword)
             _categories.value = categories.map { it.toUi() }
         }
@@ -83,5 +65,4 @@ class ProductsListViewModel @Inject constructor(
     fun onBackPressed() {
         _searchProductUiState.value = UiState.Initial
     }
-
 }

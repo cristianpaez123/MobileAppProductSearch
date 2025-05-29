@@ -26,7 +26,9 @@ class ProductsListFragment : Fragment(),
     BestSellersListener,
     ProductsListViewBinder.Listener {
 
-    private val viewModel: ProductsListViewModel by viewModels()
+    private val productSearchViewModel: ProductSearchViewModel by viewModels()
+    private val suggestionsViewModel: SuggestionsViewModel by viewModels()
+
     private lateinit var viewBinder: ProductsListViewBinder
 
     override fun onCreateView(
@@ -43,11 +45,10 @@ class ProductsListFragment : Fragment(),
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    viewModel.onBackPressed()
+                    productSearchViewModel.onBackPressed()
                 }
             }
         )
-
         observeUiState()
     }
 
@@ -65,7 +66,7 @@ class ProductsListFragment : Fragment(),
     private fun observeSearchResults() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchProductUiState.collect { handleSearchState(it) }
+                productSearchViewModel.searchProductUiState.collect { handleSearchState(it) }
             }
         }
     }
@@ -73,7 +74,7 @@ class ProductsListFragment : Fragment(),
     private fun observeSuggestions() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.suggestions.collect {
+                suggestionsViewModel.suggestions.collect {
                     viewBinder.showSuggestions(it)
                 }
             }
@@ -83,7 +84,7 @@ class ProductsListFragment : Fragment(),
     private fun observeCategories() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categories.collect {
+                productSearchViewModel.categories.collect {
                     viewBinder.showCategories(it)
                 }
             }
@@ -137,13 +138,13 @@ class ProductsListFragment : Fragment(),
     override fun submitSearch(query: String) {
         val cleanQuery = query.trim()
         if (cleanQuery.isNotEmpty()) {
-            viewModel.searchProduct(cleanQuery)
+            productSearchViewModel.searchProduct(cleanQuery)
             hideKeyboard()
         }
     }
 
     override fun searchTextChanged(query: String) {
-        viewModel.loadSuggestions(query)
+        suggestionsViewModel.loadSuggestions(query)
     }
 
     override fun onSuggestionSelected(product: ProductUi) {
@@ -155,7 +156,7 @@ class ProductsListFragment : Fragment(),
     }
 
     override fun onCategorySelected(query: String, categoryId: String) {
-        viewModel.searchProductByCategory(query, categoryId)
+        productSearchViewModel.searchProductByCategory(query, categoryId)
     }
 
     override fun showError(error: UiState.Error, retryAction: () -> Unit) {
