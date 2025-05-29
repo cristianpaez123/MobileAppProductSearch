@@ -16,6 +16,7 @@
         android:padding="20dp"
         android:text="@string/best_sellers"
         android:textStyle="bold"
+        android:textColor="@color/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

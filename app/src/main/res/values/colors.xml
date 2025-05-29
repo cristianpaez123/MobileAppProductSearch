@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="colorPrimary">@color/yellow_500</color>
     <color name="colorOnPrimary">@color/black</color>
 
-    <color name="colorPrimaryContainer">#4B86BF</color>
-    <color name="colorOnPrimaryContainer">#FFFFFF</color>
+    <color name="colorPrimaryContainer">@color/blue_500</color>
+    <color name="colorOnPrimaryContainer">@color/white</color>
 
     <color name="colorSecondary">@color/blue_900</color>
     <color name="colorOnSecondary">@color/white</color>

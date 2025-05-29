@@ -11,7 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.mobileappproductsearch.databinding.ViewBestSellersBinding
+import com.example.mobileappproductsearch.databinding.FragmentBestSellersBinding
 import com.example.mobileappproductsearch.ui.adapter.BestSellingProductsAdapter
 import com.example.mobileappproductsearch.ui.common.UiState
 import com.example.mobileappproductsearch.ui.main.BestSellersListener
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class BestSellersFragment : Fragment() {
 
-    private lateinit var binding: ViewBestSellersBinding
+    private lateinit var binding: FragmentBestSellersBinding
     private val viewModel: BestSellersViewModel by viewModels()
 
     private lateinit var adapter: BestSellingProductsAdapter
@@ -37,7 +37,7 @@ class BestSellersFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = ViewBestSellersBinding.inflate(inflater, container, false)
+        binding = FragmentBestSellersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
