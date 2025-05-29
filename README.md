@@ -100,12 +100,10 @@ Celular: +57 300 702 5600
 | <img src="https://github.com/user-attachments/assets/fff96ee9-be3f-4b57-98d9-67c9c15970ba" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/f455d6f5-ca3f-4c68-bb79-175ca6e4f832" alt="Pantalla Principal" width="200"/>         |
 
 
-| list of products                        | list of products(dark)                                                                                                                                             |
-|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="https://github.com/user-attachments/assets/3e165664-d062-4091-b5bc-ae8b615cf2eb" alt="Pantalla Principal" width="200"/>
-
-<img src="https://github.com/user-attachments/assets/0f4f594f-bf5a-40b5-9fe4-671e16bde282" alt="Pantalla Principal" width="200"/>    | <img src="https://github.com/user-attachments/assets/57ef5aee-847f-41ed-b7d1-0f60aa075df6" alt="Pantalla Principal" width="200"/>
-<img src="https://github.com/user-attachments/assets/fc6cf348-aaa0-4185-894d-e968df596c23" alt="Pantalla Principal" width="200"/>         |
+| list of products                | list of products(dark)                                                                                           |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/3e165664-d062-4091-b5bc-ae8b615cf2eb" alt="Pantalla Principal" width="200"/>    | <img src="https://github.com/user-attachments/assets/57ef5aee-847f-41ed-b7d1-0f60aa075df6" alt="Pantalla Principal" width="200"/>|
+| <img src="https://github.com/user-attachments/assets/0f4f594f-bf5a-40b5-9fe4-671e16bde282" alt="Pantalla Principal" width="200"/>  | <img src="https://github.com/user-attachments/assets/fc6cf348-aaa0-4185-894d-e968df596c23" alt="Pantalla Principal" width="200"/>   |
 
 
 
