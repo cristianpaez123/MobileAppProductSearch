@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is UiState.Idle -> Unit
+                        is UiState.Initial -> Unit
                         is UiState.Loading -> loadingState()
                         is UiState.Success -> successState()
                         is UiState.Error -> errorState(state)

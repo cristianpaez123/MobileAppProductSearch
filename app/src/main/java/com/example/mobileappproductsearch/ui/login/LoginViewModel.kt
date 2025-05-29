@@ -17,7 +17,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
+    private val _uiState = MutableStateFlow<UiState<Unit>>(UiState.Initial)
     val uiState: StateFlow<UiState<Unit>> = _uiState.asStateFlow()
 
     fun login(email: String, password: String) {

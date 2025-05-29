@@ -19,7 +19,7 @@ class BestSellersViewModel @Inject constructor(
     private val errorMapper: ProductSearchErrorMapper
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
+    private val _uiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Initial)
     val uiState: StateFlow<UiState<List<ProductUi>>> = _uiState
 
     fun loadBestSellers() {

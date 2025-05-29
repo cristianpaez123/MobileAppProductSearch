@@ -22,7 +22,7 @@ class ProductsListViewModel @Inject constructor(
     private val productSearchErrorMapper: ProductSearchErrorMapper
 ) : BaseViewModel() {
 
-    private val _searchProductUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Idle)
+    private val _searchProductUiState = MutableStateFlow<UiState<List<ProductUi>>>(UiState.Initial)
     val searchProductUiState: StateFlow<UiState<List<ProductUi>>> = _searchProductUiState
 
     private val _suggestions = MutableStateFlow<List<ProductUi>>(emptyList())

@@ -163,7 +163,7 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         hideError()
         showLoading(false)
         when (state) {
-            is UiState.Idle -> Unit
+            is UiState.Initial -> Unit
             is UiState.Loading -> showLoading(true)
             is UiState.Success -> {
                 showBestSellers(false)
@@ -205,7 +205,10 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         binding.includeViewError.apply {
             errorView.visible(true)
             txtErrorMessage.text = message
-            btnRetry.setOnClickListener { retryAction() }
+            btnRetry.setOnClickListener {
+                errorView.visible(false)
+                retryAction()
+            }
         }
 
     private fun hideError() {

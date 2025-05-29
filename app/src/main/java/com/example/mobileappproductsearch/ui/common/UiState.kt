@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 
 sealed class UiState<out T> {
 
-    data object Idle : UiState<Nothing>()
+    data object Initial : UiState<Nothing>()
 
     data object Loading : UiState<Nothing>()
 

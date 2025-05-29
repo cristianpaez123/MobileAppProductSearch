@@ -67,7 +67,7 @@ class BestSellersFragment : Fragment() {
                 viewModel.uiState.collect { state ->
                     showShimmer(false)
                     when (state) {
-                        is UiState.Idle -> Unit
+                        is UiState.Initial -> Unit
                         is UiState.Loading -> showShimmer(true)
                         is UiState.Success -> {
                             binding.root.visible(true)
