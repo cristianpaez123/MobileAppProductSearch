@@ -115,9 +115,5 @@ Celular: +57 300 702 5600
 
 | product not found                       | product not found(dark)                                                                                    |
 |------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="https://github.com/user-attachments/assets/1c755813-042c-46a5-9aae-8167ec50863d" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/2f47d575-15ec-41ea-88a1-942277634e29" alt="Pantalla Principal" width="200"/>         |
-
-
-
-
+| <img src="https://github.com/user-attachments/assets/fb5420e5-18cb-4546-aedf-d5a0996159f8" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/d1b62e93-4f92-487c-8786-3d6c1627e7a4" alt="Pantalla Principal" width="200"/>         |
 
