@@ -1,4 +1,5 @@
 package com.example.mobileappproductsearch.data.repository
+
 import com.example.mobileappproductsearch.R
 import com.example.mobileappproductsearch.domain.model.LoginResult
 import com.example.mobileappproductsearch.domain.repository.AuthRepository

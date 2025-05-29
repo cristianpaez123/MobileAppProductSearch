@@ -7,7 +7,7 @@ import com.example.mobileappproductsearch.ui.model.PictureUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import javax.inject.Inject
 
-class ProductDetailViewModel @Inject constructor(): ViewModel(){
+class ProductDetailViewModel @Inject constructor() : ViewModel() {
 
     private val _product = MutableLiveData<ProductUi>()
     val product: LiveData<ProductUi> = _product

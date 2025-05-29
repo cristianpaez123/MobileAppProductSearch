@@ -78,13 +78,15 @@ class LoginActivity : AppCompatActivity() {
 
     private fun hideKeyboard() {
         currentFocus?.let { view ->
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+            val imm =
+                getSystemService(INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
     private fun showLoadingOverlay(show: Boolean) {
-        binding.includeLoadingOverlay.loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
+        binding.includeLoadingOverlay.loadingOverlay.visibility =
+            if (show) View.VISIBLE else View.GONE
     }
 
     private fun successState() {

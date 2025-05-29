@@ -17,8 +17,11 @@ class ProductSearchRepositoryImpl @Inject constructor(
         return response.results.map { it.toDomain() }
     }
 
-    override suspend fun searchProductsByCategory(keyword: String, category:String): List<Product> {
-        val response = api.getProductsByCategory(STATUS_ACTIVE, SITE_ID_MCO, keyword,category)
+    override suspend fun searchProductsByCategory(
+        keyword: String,
+        category: String
+    ): List<Product> {
+        val response = api.getProductsByCategory(STATUS_ACTIVE, SITE_ID_MCO, keyword, category)
         return response.results.map { it.toDomain() }
     }
 

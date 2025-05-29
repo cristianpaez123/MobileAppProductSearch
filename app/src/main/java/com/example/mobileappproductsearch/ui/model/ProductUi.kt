@@ -21,13 +21,13 @@ data class AttributeUi(
     val id: String,
     val name: String,
     val valueName: String
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class PictureUi(
     val id: String,
     val url: String
-): Parcelable
+) : Parcelable
 
 fun Product.toUi(): ProductUi {
     return ProductUi(

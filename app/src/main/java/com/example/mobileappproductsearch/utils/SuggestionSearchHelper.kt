@@ -64,7 +64,8 @@ class SuggestionSearchHelper(
 
             val realHeight = recyclerView.measuredHeight
             recyclerView.layoutParams = recyclerView.layoutParams.apply {
-                height = if (realHeight > maxPopupHeight) maxPopupHeight else ViewGroup.LayoutParams.WRAP_CONTENT
+                height =
+                    if (realHeight > maxPopupHeight) maxPopupHeight else ViewGroup.LayoutParams.WRAP_CONTENT
             }
         }
     }

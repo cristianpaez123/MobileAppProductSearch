@@ -74,8 +74,9 @@ class BestSellersFragment : Fragment() {
                             binding.root.visible(true)
                             adapter.updateData(state.data)
                         }
+
                         is UiState.Error -> {
-                            bestSellersListener?.showError(state){
+                            bestSellersListener?.showError(state) {
                                 viewModel.loadBestSellers()
                             }
                         }

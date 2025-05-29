@@ -1,7 +1,6 @@
 package com.example.mobileappproductsearch.utils
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.mobileappproductsearch.R

@@ -11,7 +11,8 @@ class ImagePagerAdapter(
     private var images: List<PictureUi>
 ) : RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>() {
 
-    inner class ImageViewHolder(val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ImageViewHolder(val binding: ItemImageBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val binding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)

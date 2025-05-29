@@ -3,8 +3,8 @@ package com.example.mobileappproductsearch.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobileappproductsearch.databinding.ItemBestSellerProductsBinding
 import com.bumptech.glide.Glide
+import com.example.mobileappproductsearch.databinding.ItemBestSellerProductsBinding
 import com.example.mobileappproductsearch.ui.model.ProductUi
 
 class BestSellingProductsAdapter(

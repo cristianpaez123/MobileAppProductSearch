@@ -1,9 +1,9 @@
 package com.example.testwireless.di
 
-import com.example.mobileappproductsearch.domain.repository.AuthRepository
 import com.example.mobileappproductsearch.data.repository.AuthRepositoryImpl
 import com.example.mobileappproductsearch.data.repository.CategoryRepositoryImpl
 import com.example.mobileappproductsearch.data.repository.ProductSearchRepositoryImpl
+import com.example.mobileappproductsearch.domain.repository.AuthRepository
 import com.example.mobileappproductsearch.domain.repository.CategoryRepository
 import com.example.mobileappproductsearch.domain.repository.ProductSearchRepository
 import dagger.Binds

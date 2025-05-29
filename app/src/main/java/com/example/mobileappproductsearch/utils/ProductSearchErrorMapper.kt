@@ -15,6 +15,7 @@ class ProductSearchErrorMapper @Inject constructor() {
                 404 -> R.string.error_not_found
                 else -> R.string.error_server_generic
             }
+
             is IOException -> R.string.error_network
             else -> R.string.error_unexpected
         }
