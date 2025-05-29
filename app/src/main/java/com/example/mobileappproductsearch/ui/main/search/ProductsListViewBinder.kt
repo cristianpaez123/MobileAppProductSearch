@@ -22,14 +22,16 @@ class ProductsListViewBinder(
     private val listener: Listener,
 ) {
 
-    private var binding: FragmentProductsListBinding =
+    private val binding: FragmentProductsListBinding =
         FragmentProductsListBinding.inflate(inflater, container, false)
 
     private val context = binding.root.context
 
     private lateinit var popupHelper: SuggestionSearchHelper
 
-    private val productAdapter = ProductAdapter(emptyList()) { listener.onProductSelected(it) }
+    private val productAdapter = ProductAdapter(emptyList()) {
+        listener.onProductSelected(it)
+    }
 
     private val categoriesAdapter = CategoriesAdapter(emptyList()) { category ->
         val query = binding.editTextSearchProduct.text.toString().trim()
@@ -37,21 +39,14 @@ class ProductsListViewBinder(
     }
 
     init {
-
-        binding.recyclerProducts.apply {
-            layoutManager = GridLayoutManager(context, 1)
-            adapter = productAdapter
-        }
-
-        binding.categoriesRecycler.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = categoriesAdapter
-        }
-
+        setupRecyclerViews()
         setupSearchView()
-
         setupSuggestionPopup()
     }
+
+    fun getRoot(): View = binding.root
+
+    fun getSearchText(): String = binding.editTextSearchProduct.text.toString().trim()
 
     fun updateProducts(products: List<ProductUi>) {
         binding.recyclerProducts.visible(true)
@@ -98,33 +93,47 @@ class ProductsListViewBinder(
         binding.editTextSearchProduct.text.clear()
     }
 
-    fun getRoot() = binding.root
+    fun showSuggestions(products: List<ProductUi>) {
+        popupHelper.showSuggestions(products)
+    }
 
-    fun getSearchText() = binding.editTextSearchProduct.text.toString().trim()
+    fun dismissSuggestions() {
+        popupHelper.dismiss()
+    }
 
-    private fun setupSearchView() {
-        binding.apply {
-            editTextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    listener.submitSearch(v.text.toString())
-                    dismissSuggestions()
-                    true
-                } else false
-            }
+    private fun setupRecyclerViews() {
+        binding.recyclerProducts.apply {
+            layoutManager = GridLayoutManager(context, 1)
+            adapter = productAdapter
+        }
 
-            editTextSearchProduct.addTextChangedListener {
-                imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
-                listener.searchTextChanged(it.toString())
-            }
+        binding.categoriesRecycler.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = categoriesAdapter
+        }
+    }
 
-            imageClear.setOnClickListener {
-                editTextSearchProduct.text.clear()
-            }
-
-            imageSearch.setOnClickListener {
-                listener.submitSearch(editTextSearchProduct.text.toString())
+    private fun setupSearchView() = binding.apply {
+        editTextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                listener.submitSearch(v.text.toString())
                 dismissSuggestions()
-            }
+                true
+            } else false
+        }
+
+        editTextSearchProduct.addTextChangedListener {
+            imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
+            listener.searchTextChanged(it.toString())
+        }
+
+        imageClear.setOnClickListener {
+            editTextSearchProduct.text.clear()
+        }
+
+        imageSearch.setOnClickListener {
+            listener.submitSearch(editTextSearchProduct.text.toString())
+            dismissSuggestions()
         }
     }
 
@@ -137,14 +146,6 @@ class ProductsListViewBinder(
         }
     }
 
-    fun showSuggestions(products: List<ProductUi>) {
-        popupHelper.showSuggestions(products)
-    }
-
-    fun dismissSuggestions() {
-        popupHelper.dismiss()
-    }
-
     interface Listener {
         fun submitSearch(query: String)
         fun searchTextChanged(query: String)
@@ -153,3 +154,4 @@ class ProductsListViewBinder(
         fun onCategorySelected(query: String, categoryId: String)
     }
 }
+
