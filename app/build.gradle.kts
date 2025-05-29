@@ -32,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -88,5 +88,10 @@ dependencies {
     implementation ("com.google.android.material:material:1.11.0")
     //shimmer
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+    // Test
+    implementation ("org.mockito:mockito-core:5.2.0")
+    implementation ("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
 }
