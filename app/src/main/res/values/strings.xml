@@ -27,4 +27,6 @@
     <string name="server_error_message">Something went wrong. Please try again.</string>
     <string name="retry">Retry</string>
     <string name="error">Error icon</string>
+
+    <string name="product_not_found">Product not found</string>
 </resources>

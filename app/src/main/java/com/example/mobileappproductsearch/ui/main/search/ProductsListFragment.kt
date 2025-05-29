@@ -164,6 +164,7 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         showLoading(false)
         when (state) {
             is UiState.Initial -> Unit
+            is UiState.EmptyData -> showNoProductsFound()
             is UiState.Loading -> showLoading(true)
             is UiState.Success -> {
                 showBestSellers(false)
@@ -200,6 +201,13 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         }
         showError(message, retryAction)
     }
+
+    private fun showNoProductsFound() =
+        binding.includeViewError.apply {
+            errorView.visible(true)
+            txtErrorMessage.text = getString(R.string.product_not_found)
+            btnRetry.visible(false)
+        }
 
     private fun showError(message: String, retryAction: () -> Unit) =
         binding.includeViewError.apply {

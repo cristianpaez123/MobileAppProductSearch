@@ -68,6 +68,7 @@ class BestSellersFragment : Fragment() {
                     showShimmer(false)
                     when (state) {
                         is UiState.Initial -> Unit
+                        is UiState.EmptyData -> Unit
                         is UiState.Loading -> showShimmer(true)
                         is UiState.Success -> {
                             binding.root.visible(true)
