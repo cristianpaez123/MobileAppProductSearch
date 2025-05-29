@@ -56,3 +56,32 @@ Para acceder a la aplicación, puedes utilizar uno de los siguientes usuarios de
 - Un emulador o dispositivo físico con Android 8.0 (API 24) o superior
 
 ---
+
+
+## 🛠️ Instrucciones de Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/cristianpaez123/MobileAppProductSearch
+
+   Abre el proyecto en Android Studio
+
+2. Sincroniza las dependencias de Gradle
+
+3. Configura un emulador o conecta un dispositivo físico
+
+4. Haz clic en el botón "Run" para ejecutar la aplicación
+
+---
+
+## 👤 Autor
+
+Nombre: Cristian Paez
+
+GitHub: @cristianpaez123
+
+Correo: cristianpaezguerrero@gmail.com
+
+Celular: +57 300 702 5600
+
+---
