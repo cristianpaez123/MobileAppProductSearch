@@ -1,3 +1,18 @@
+
+
+## 🔐 ingresar Token de API en AppModule.kt
+Para que la app pueda hacer peticiones autenticadas al backend de Mercado Libre, necesitas registrar tu token de acceso dentro del archivo:
+
+app/
+└── java/
+    └── com.example.mobileappproductsearch/
+        └── di/
+            └── AppModule.kt
+
+## private const val TOKEN = "APP_USR-7252043312902260-052916-dc5ccb7c7c6edafee005f1f24d35f0f2-706706141"
+
+--- 
+
 # 🛒 Aplicación de Búsqueda y Visualización de Productos
 
 Esta aplicación Android permite a los usuarios autenticarse, buscar productos por categorías o palabras clave, recibir sugerencias inteligentes, y visualizar detalles completos de los productos. Además, ofrece una pantalla inicial con los productos más vendidos.
