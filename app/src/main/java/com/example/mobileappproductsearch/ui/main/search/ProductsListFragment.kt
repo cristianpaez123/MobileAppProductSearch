@@ -54,7 +54,7 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    handleBackPressed()
+                    viewModel.onBackPressed()
                 }
             }
         )
@@ -64,8 +64,6 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         setupRecyclerViews()
         setupSearchView()
         observeUiState()
-
-        loadBestSellersFragment()
     }
 
     override fun onDestroyView() {
@@ -163,7 +161,10 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         hideError()
         showLoading(false)
         when (state) {
-            is UiState.Initial -> Unit
+            is UiState.Initial -> {
+                clearSearchField()
+                loadBestSellersFragment()
+            }
             is UiState.EmptyData -> showNoProductsFound()
             is UiState.Loading -> showLoading(true)
             is UiState.Success -> {
@@ -233,6 +234,7 @@ class ProductsListFragment : Fragment(), BestSellersListener {
     }
 
     private fun loadBestSellersFragment() {
+        showBestSellers(true)
         childFragmentManager.beginTransaction()
             .replace(R.id.bestSellersFragmentContainer, BestSellersFragment())
             .commit()
@@ -261,10 +263,5 @@ class ProductsListFragment : Fragment(), BestSellersListener {
 
     override fun showError(error: UiState.Error, retryAction: () -> Unit) {
         errorState(error, retryAction)
-    }
-
-    private fun handleBackPressed() {
-        clearSearchField()
-        showBestSellers(true)
     }
 }

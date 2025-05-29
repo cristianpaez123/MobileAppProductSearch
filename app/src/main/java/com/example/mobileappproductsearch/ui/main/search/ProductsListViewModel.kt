@@ -80,4 +80,8 @@ class ProductsListViewModel @Inject constructor(
         }
     }
 
+    fun onBackPressed() {
+        _searchProductUiState.value = UiState.Initial
+    }
+
 }
