@@ -86,13 +86,26 @@ Celular: +57 300 702 5600
 
 ---
 
+| Login                        | Login(dark)                                                                                                                                             |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/0ccde1de-d131-4904-8eb0-ebe14c0c9fb6" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/90d3f66d-2dd8-41eb-9683-445b24794a20" alt="Pantalla Principal" width="200"/>         |
 
-<h3>Login</h3>                                                                                                                      <h3>Login(dark)</h3>                                                                                                                            
-              
-<img src="https://github.com/user-attachments/assets/0ccde1de-d131-4904-8eb0-ebe14c0c9fb6" alt="Pantalla Principal" width="200"/>   <img src="https://github.com/user-attachments/assets/90d3f66d-2dd8-41eb-9683-445b24794a20" alt="Pantalla Principal" width="200"/>
+| initial view (best-selling products)                        | initial view (best-selling products)(dark)                                                                                                                                             |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/69676bdf-066c-4699-afa8-4ec414123dc4" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/eb6534f5-4e12-49b1-b61e-60613bfc88d5" alt="Pantalla Principal" width="200"/>         |
 
 
+| suggestions                        | suggestions(dark)                                                                                                                                             |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/fff96ee9-be3f-4b57-98d9-67c9c15970ba" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/f455d6f5-ca3f-4c68-bb79-175ca6e4f832" alt="Pantalla Principal" width="200"/>         |
 
+
+| list of products                        | list of products(dark)                                                                                                                                             |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/3e165664-d062-4091-b5bc-ae8b615cf2eb" alt="Pantalla Principal" width="200"/>
+
+<img src="https://github.com/user-attachments/assets/0f4f594f-bf5a-40b5-9fe4-671e16bde282" alt="Pantalla Principal" width="200"/>    | <img src="https://github.com/user-attachments/assets/57ef5aee-847f-41ed-b7d1-0f60aa075df6" alt="Pantalla Principal" width="200"/>
+<img src="https://github.com/user-attachments/assets/fc6cf348-aaa0-4185-894d-e968df596c23" alt="Pantalla Principal" width="200"/>         |
 
 
 
