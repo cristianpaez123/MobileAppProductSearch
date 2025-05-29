@@ -121,8 +121,6 @@ class ProductsListFragment : Fragment(),
         viewBinder.showError(message, retryAction)
     }
 
-    // --- Navigation ---
-
     private fun loadBestSellersFragment() {
         viewBinder.showBestSellers(true)
         childFragmentManager.beginTransaction()
