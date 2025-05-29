@@ -3,14 +3,17 @@
 ## 🔐 ingresar Token de API en AppModule.kt
 Para que la app pueda hacer peticiones autenticadas al backend de Mercado Libre, necesitas registrar tu token de acceso dentro del archivo:
 
+📍 **com.example.mobileappproductsearch.di.AppModule**
+
+```
 app/
 └── java/
     └── com.example.mobileappproductsearch/
         └── di/
             └── AppModule.kt
 
-## private const val TOKEN = "APP_USR-7252043312902260-052916-dc5ccb7c7c6edafee005f1f24d35f0f2-706706141"
-
+## private const val TOKEN = "TU_TOKEN_AQUI"
+```
 --- 
 
 # 🛒 Aplicación de Búsqueda y Visualización de Productos
