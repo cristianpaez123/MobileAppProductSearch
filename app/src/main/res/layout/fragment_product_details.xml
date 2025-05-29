@@ -26,7 +26,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintVertical_bias="0.5"
+            app:tint="@color/colorOnPrimary" />
 
         <TextView
             android:id="@+id/textProductName"
@@ -36,6 +37,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textSize="20sp"
+            android:textColor="@color/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageBack"
@@ -75,6 +77,7 @@
         android:padding="20dp"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/colorOnBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         tools:text="Characteristics of product" />

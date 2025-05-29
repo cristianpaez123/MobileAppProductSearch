@@ -9,7 +9,7 @@
     <color name="colorSecondary">@color/blue_900</color>
     <color name="colorOnSecondary">@color/white</color>
 
-    <color name="colorTertiary">@color/gray_100</color>
+    <color name="colorTertiary">@color/gray_500</color>
     <color name="colorOnTertiary">@color/black</color>
 
     <color name="colorBackground">@color/white</color>

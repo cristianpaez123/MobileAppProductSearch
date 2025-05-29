@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.example.mobileappproductsearch.R
 
 fun Context.resolveRowColor(isGray: Boolean): Int {
-    return ContextCompat.getColor(this, if (isGray) R.color.colorTertiary else R.color.white)
+    return ContextCompat.getColor(this, if (isGray) R.color.colorTertiary else R.color.colorSurface)
 }
 
 fun View.visible(show: Boolean) {
