@@ -106,6 +106,9 @@ Celular: +57 300 702 5600
 | <img src="https://github.com/user-attachments/assets/0f4f594f-bf5a-40b5-9fe4-671e16bde282" alt="Pantalla Principal" width="200"/>  | <img src="https://github.com/user-attachments/assets/fc6cf348-aaa0-4185-894d-e968df596c23" alt="Pantalla Principal" width="200"/>   |
 
 
+| product details                        | product details(dark)                                                                                    |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/15cbadda-73c0-4f31-be1c-9eedf013a86f" alt="Pantalla Principal" width="200"/>   | <img src="https://github.com/user-attachments/assets/8848e087-d589-4692-8a4d-4d6f793c33ea" alt="Pantalla Principal" width="200"/>         |
 
 
 
