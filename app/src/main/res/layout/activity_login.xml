@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/colorOnBackground"
                 android:text="prueba@gmail.com" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:textColor="@color/colorOnBackground"
                 android:text="123456" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -15,7 +15,7 @@
     <color name="colorBackground">@color/black</color>
     <color name="colorOnBackground">@color/white</color>
 
-    <color name="colorSurface">@color/black</color>
+    <color name="colorSurface">@color/gray_500</color>
     <color name="colorOnSurface">@color/white</color>
 
     <color name="loadingOverlayBackground">@color/black_alpha_80</color>
