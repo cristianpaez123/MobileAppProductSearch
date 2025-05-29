@@ -40,7 +40,11 @@ class ProductsListViewModel @Inject constructor(
             }
         ) {
             val products = searchProductsUseCase(keyword)
-            _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
+            if (products.isNotEmpty()) {
+                _searchProductUiState.value = UiState.Success(products.map { it.toUi() })
+            } else {
+                _searchProductUiState.value = UiState.EmptyData
+            }
             fetchCategories(keyword)
         }
     }

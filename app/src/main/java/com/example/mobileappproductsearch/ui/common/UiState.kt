@@ -10,6 +10,8 @@ sealed class UiState<out T> {
 
     data class Success<T>(val data: T) : UiState<T>()
 
+    data object EmptyData : UiState<Nothing>()
+
     sealed class Error : UiState<Nothing>() {
         data class MessageRes(@StringRes val resId: Int) : Error()
         data class MessageText(val message: String) : Error()

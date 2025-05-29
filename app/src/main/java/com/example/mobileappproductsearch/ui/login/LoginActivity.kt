@@ -61,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.uiState.collect { state ->
                     when (state) {
                         is UiState.Idle -> Unit
+                        is UiState.EmptyData -> Unit
                         is UiState.Loading -> loadingState()
                         is UiState.Success -> successState()
                         is UiState.Error -> errorState(state)
