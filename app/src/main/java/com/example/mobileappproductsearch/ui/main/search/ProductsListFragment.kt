@@ -32,43 +32,40 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProductsListFragment : Fragment(), BestSellersListener {
+class ProductsListFragment : Fragment(), BestSellersListener, ProductsListViewBinder.Listener {
 
     private val viewModel: ProductsListViewModel by viewModels()
-    private lateinit var binding: FragmentProductsListBinding
 
-    private lateinit var popupHelper: SuggestionSearchHelper
+    private lateinit var viewBinder: ProductsListViewBinder
+
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProductsListBinding.inflate(inflater, container, false)
-        return binding.root
+        viewBinder = ProductsListViewBinder(inflater, container, this)
+        return viewBinder.getRoot()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     viewModel.onBackPressed()
                 }
             }
         )
-
         initAdapters()
-        setupSuggestionPopup()
-        setupRecyclerViews()
-        setupSearchView()
         observeUiState()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        popupHelper.dismiss()
+        viewBinder.dismissSuggestions()
     }
 
     private fun initAdapters() {
@@ -77,51 +74,8 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         }
 
         categoriesAdapter = CategoriesAdapter(emptyList()) {
-            val query = binding.editTextSearchProduct.text.toString().trim()
+            val query = viewBinder.getSearchText()
             viewModel.searchProductByCategory(query, it.domainId)
-        }
-    }
-
-    private fun setupSuggestionPopup() {
-        popupHelper = SuggestionSearchHelper(requireContext(), binding.cardView) { product ->
-            binding.editTextSearchProduct.setText(product.name)
-            navigateToProductDetails(product)
-            clearSearchField()
-            popupHelper.dismiss()
-        }
-    }
-
-    private fun setupRecyclerViews() {
-        binding.recyclerProducts.apply {
-            layoutManager = GridLayoutManager(context, 1)
-            adapter = productAdapter
-        }
-
-        binding.categoriesRecycler.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = categoriesAdapter
-        }
-    }
-
-    private fun setupSearchView() = binding.apply {
-        editTextSearchProduct.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                submitSearch(v.text.toString())
-                true
-            } else false
-        }
-
-        editTextSearchProduct.addTextChangedListener {
-            imageClear.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
-            viewModel.loadSuggestions(it.toString())
-        }
-
-        imageClear.setOnClickListener {
-            editTextSearchProduct.text.clear()
-        }
-
-        imageSearch.setOnClickListener {
-            submitSearch(editTextSearchProduct.text.toString())
         }
     }
 
@@ -143,7 +97,7 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestions.collect {
-                    popupHelper.showSuggestions(it)
+                    viewBinder.showSuggestions(it)
                 }
             }
         }
@@ -152,47 +106,31 @@ class ProductsListFragment : Fragment(), BestSellersListener {
     private fun observeCategories() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categories.collect { showCategories(it) }
+                viewModel.categories.collect { viewBinder.showCategories(it) }
             }
         }
     }
 
     private fun handleSearchState(state: UiState<List<ProductUi>>) {
-        hideError()
-        showLoading(false)
+        viewBinder.hideError()
+        viewBinder.showLoading(false)
         when (state) {
             is UiState.Initial -> {
-                clearSearchField()
+                viewBinder.clearSearchField()
                 loadBestSellersFragment()
             }
-            is UiState.EmptyData -> showNoProductsFound()
-            is UiState.Loading -> showLoading(true)
+
+            is UiState.EmptyData -> viewBinder.showNoProductsFound()
+            is UiState.Loading -> viewBinder.showLoading(true)
             is UiState.Success -> {
-                showBestSellers(false)
-                showProducts(state.data)
+                viewBinder.showBestSellers(false)
+                viewBinder.updateProducts(state.data)
             }
+
             is UiState.Error -> errorState(state) {
-                submitSearch(binding.editTextSearchProduct.text.toString())
+                submitSearch(viewBinder.getSearchText())
             }
         }
-    }
-
-    private fun showBestSellers(show: Boolean) {
-        binding.bestSellersFragmentContainer.visible(show)
-    }
-
-    private fun showProducts(products: List<ProductUi>) {
-        binding.recyclerProducts.visible(true)
-        productAdapter.updateData(products)
-    }
-
-    private fun showCategories(categories: List<CategoryModelUi>) {
-        binding.categoriesRecycler.visible(categories.isNotEmpty())
-        if (categories.isNotEmpty()) categoriesAdapter.updateCategories(categories)
-    }
-
-    private fun showLoading(show: Boolean) {
-        binding.includeLoadingOverlay.loadingOverlay.visible(show)
     }
 
     private fun errorState(error: UiState.Error, retryAction: () -> Unit) {
@@ -200,41 +138,27 @@ class ProductsListFragment : Fragment(), BestSellersListener {
             is UiState.Error.MessageRes -> getString(error.resId)
             is UiState.Error.MessageText -> error.message
         }
-        showError(message, retryAction)
+        viewBinder.showError(message, retryAction)
     }
 
-    private fun showNoProductsFound() =
-        binding.includeViewError.apply {
-            errorView.visible(true)
-            txtErrorMessage.text = getString(R.string.product_not_found)
-            btnRetry.visible(false)
-        }
-
-    private fun showError(message: String, retryAction: () -> Unit) =
-        binding.includeViewError.apply {
-            errorView.visible(true)
-            txtErrorMessage.text = message
-            btnRetry.setOnClickListener {
-                errorView.visible(false)
-                retryAction()
-            }
-        }
-
-    private fun hideError() {
-        binding.includeViewError.errorView.visible(false)
-    }
-
-    private fun submitSearch(query: String) {
+    override fun submitSearch(query: String) {
         val cleanQuery = query.trim()
         if (cleanQuery.isNotEmpty()) {
             viewModel.searchProduct(cleanQuery)
-            popupHelper.dismiss()
             hideKeyboard()
         }
     }
 
+    override fun searchTextChanged(query: String) {
+        viewModel.loadSuggestions(query)
+    }
+
+    override fun onSuggestionSelected(product: ProductUi) {
+        navigateToProductDetails(product)
+    }
+
     private fun loadBestSellersFragment() {
-        showBestSellers(true)
+        viewBinder.showBestSellers(true)
         childFragmentManager.beginTransaction()
             .replace(R.id.bestSellersFragmentContainer, BestSellersFragment())
             .commit()
@@ -253,12 +177,12 @@ class ProductsListFragment : Fragment(), BestSellersListener {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun clearSearchField() {
-        binding.editTextSearchProduct.text.clear()
-    }
-
     override fun onProductSelected(product: ProductUi) {
         navigateToProductDetails(product)
+    }
+
+    override fun onCategorySelected(query: String, categoryId: String) {
+        viewModel.searchProductByCategory(query, categoryId)
     }
 
     override fun showError(error: UiState.Error, retryAction: () -> Unit) {
