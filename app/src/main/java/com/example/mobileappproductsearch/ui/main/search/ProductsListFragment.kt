@@ -68,7 +68,6 @@ class ProductsListFragment : Fragment(), BestSellersListener {
     private fun initAdapters() {
         productAdapter = ProductAdapter(emptyList()) {
             navigateToProductDetails(it)
-            clearSearchField()
         }
 
         categoriesAdapter = CategoriesAdapter(emptyList()) {
