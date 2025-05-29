@@ -1,9 +1,7 @@
 package com.example.mobileappproductsearch.ui.main.search
 
-import com.example.mobileappproductsearch.domain.useCase.CategoriesUseCase
 import com.example.mobileappproductsearch.domain.useCase.SearchProductsUseCase
 import com.example.mobileappproductsearch.ui.common.BaseViewModel
-import com.example.mobileappproductsearch.ui.model.CategoryModelUi
 import com.example.mobileappproductsearch.ui.model.ProductUi
 import com.example.mobileappproductsearch.ui.model.toUi
 import dagger.hilt.android.lifecycle.HiltViewModel

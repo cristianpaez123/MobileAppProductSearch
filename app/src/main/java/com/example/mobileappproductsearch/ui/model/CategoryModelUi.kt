@@ -1,6 +1,6 @@
 package com.example.mobileappproductsearch.ui.model
 
-import com.example.mobileappproductsearch.domain.model.CategoryModelEntity
+import com.example.mobileappproductsearch.domain.model.Category
 
 data class CategoryModelUi(
     val domainId: String,
@@ -8,7 +8,7 @@ data class CategoryModelUi(
     val isSelected: Boolean = false
 )
 
-fun CategoryModelEntity.toUi(): CategoryModelUi = CategoryModelUi(
+fun Category.toUi(): CategoryModelUi = CategoryModelUi(
     domainId = domainId,
     domainName = domainName
 )

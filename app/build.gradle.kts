@@ -93,5 +93,7 @@ dependencies {
     implementation ("org.mockito:mockito-core:5.2.0")
     implementation ("org.mockito.kotlin:mockito-kotlin:5.2.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    implementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation(kotlin("test"))
 
 }

@@ -81,9 +81,7 @@ class BestSellersViewModelTest {
         assert((state as UiState.Error.MessageRes).resId == expectedErrorResId)
     }
 
-
-
-    val product1 = Product(
+    private val product1 = Product(
         id = "1",
         name = "Product 1",
         status = "active",
@@ -92,12 +90,4 @@ class BestSellersViewModelTest {
         description = "Test product"
     )
 
-    val productUi1 = ProductUi(
-        id = "1",
-        name = "Product 1",
-        status = "active",
-        attributes = emptyList(),
-        pictures = emptyList(),
-        description = "Test product"
-    )
 }
